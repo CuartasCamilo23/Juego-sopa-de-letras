@@ -603,6 +603,132 @@ const levels = [
   
     bgClass: "level-bg-30"
 },
+// Nivel 31 - Desastres Naturales
+{
+    theme: "Desastres Naturales",
+    words: ["TERREMOTO", "TSUNAMI", "HURACAN", "TORNADO", "ERUPCION", "INUNDACION", "SEQUIA", "AVALANCHA", "INCENDIO"],
+    grid: [
+        "DTEAOSEQUIAS",
+        "QEERTYUIOPLA",
+        "ARDFGHJKDÑNX",
+        "ZRCUARNDACON",
+        "VENMASDFNHIO",
+        "QMMSEQURRYCI",
+        "POKJHGFDOAAC",
+        "MTSUNAMITODP",
+        "IOYTREWQASNU",
+        "OPINCENDIOUR",
+        "AHCNALAVAQNE",
+        "HURACANMNBIC"
+    ],
+    bgClass: "level-bg-31"
+},
+// Nivel 32 - Energías Renovables
+{
+    theme: "Energías Renovables",
+    words: ["SOLAR", "EOLICA", "HIDRICA", "GEOTERMICA", "BIOMASA", "MARINA", "NUCLEAR", "RENOVABLE", "SALUD"],
+    grid: [
+        "ELBAVONERDIR",
+        "QMARINALAVTA",
+        "ASDHIDRICAUL",
+        "ZXCGSALUDRMO",
+        "ASAMOIBAOLKS",
+        "TYURENLVABLC",
+        "FGHMARONADFA",
+        "QAZWSOSPROWC",
+        "EOLICATGBHYU",
+        "NUCLEAROPADD",
+        "QWERTYUIOPLK",
+        "GACIMRETOEGG"
+    ],
+    bgClass: "level-bg-32"
+},
+// Nivel 33 - Civilizaciones Antiguas
+{
+    theme: "Civilizaciones Antiguas",
+    words: ["EGIPCIA", "ROMANA", "GRIEGA", "MAYA", "AZTECA", "CHINA", "INCA", "MESOPOTAMIA", "VIKINGA"],
+    grid: [
+        "EGIPCIAROAAN",
+        "QWERTYYIONAF",
+        "SDFGHJALÑAFX",
+        "CHINAMMEYMQV",
+        "APTERACHIOAA",
+        "ZXCVBNMIARAG",
+        "MESOPOTAMIAN",
+        "LKJHGFDZAZXI",
+        "QAZWSXETCRFK",
+        "TGBYHNUEMIKI",
+        "AGEIRGUCSFYV",
+        "LDSLUHIACNIV"
+    ],
+    bgClass: "level-bg-33"
+},
+// Nivel 34 - Monumentos Famosos
+{
+    theme: "Monumentos Famosos",
+    words: ["TORRE", "COLISEO", "TAJ", "MURALLA", "BIGBEN", "PIRAMIDE", "CRISTO", "PETRA", "PARTENON"],
+    grid: [
+        "TASDFWQERTYU",
+        "QWECOLISEOIP",
+        "ASDGSDOLOJHG",
+        "ZXCMURALEABN",
+        "BIGBENQWSRTY",
+        "POEDIMARIPEU",
+        "LKJHGTDSLCRT",
+        "PETRAAXCOBNE",
+        "QAZWSJEDCRFR",
+        "TGBPARTENONR",
+        "PLMALLARUMAO",
+        "BVCRISTOQWET"
+    ],
+    bgClass: "level-bg-34"
+},
+// Nivel 35 - Tipos de Árboles
+{
+    theme: "Tipos de Árboles",
+    words: ["ROBLE", "PINO", "CEDRO", "ABETO", "SAUCE", "OLIVO", "PALMA", "EUCALIPTO", "CIPRES"],
+    grid: [
+        "QWERYAMLAPOD",
+        "SDFGHJALÑZVD",
+        "EXCVBNBASDIF",
+        "UCEDROEDCRLJ",
+        "COGBYHTUJMOT",
+        "ANLPÑQOERTYB",
+        "LIOPASDFGHJE",
+        "IPZXCVBNMQAL",
+        "PSXEDCRFVTGB",
+        "TCIPRESIKOLO",
+        "OÑROBLOXDIOR",
+        "PAECUASEKLZW"
+    ],
+    bgClass: "level-bg-35"
+},
+// Nivel 36 - Minerales y Piedras Preciosas
+{
+    theme: "Minerales y Piedras Preciosas",
+    words: ["DIAMANTE", "ESMERALDA", "ZAFIRO", "RUBI", "AMATISTA", "CUARZO", "TOPACIO", "ORO", "TURMALINA"],
+    grid: [
+        "QWEATSITAMAF",
+        "SDFGHJKLÑZXA",
+        "ZXKUARDNSDFD",
+        "QAZWSOZRAUCL",
+        "VOICAPOTJMIA",
+        "IOLPÑQWERTYR",
+        "BIOPASDFGHJE",
+        "UETNAMAIDAAM",
+        "RSXEORIFAZGS",
+        "BYHNUJMIKOLE",
+        "TURMALINAKDA",
+        "POROFGHJKLZY"
+    ],
+    bgClass: "level-bg-36"
+}
+
+
+
+
+
+
 
 
 
