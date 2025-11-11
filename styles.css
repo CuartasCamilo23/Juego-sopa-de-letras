@@ -428,7 +428,7 @@ h1 {
 }
 
 /* Fondos de niveles */
-.level-bg-1 { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
+.level-bg-1 { background: linear-gradient(135deg, #f667fa 0%, #c3cfe2 100%); }
 .level-bg-2 { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); }
 .level-bg-3 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
 .level-bg-4 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
@@ -448,6 +448,94 @@ h1 {
 .level-bg-18 { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); }
 .level-bg-19 { background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%); }
 .level-bg-20 { background: linear-gradient(135deg, #868f96 0%, #596164 100%); }
+.level-bg-21 { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
+.level-bg-22 { background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%); }
+.level-bg-23 { background: linear-gradient(135deg, #fddb92 0%, #d1fdff 100%); }
+.level-bg-24 { background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%); }
+.level-bg-25 { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+.level-bg-26 { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); }
+.level-bg-27 { background: linear-gradient(135deg, #ff8177 0%, #ff867a 100%); }
+.level-bg-28 { background: linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%); }
+.level-bg-29 { background: linear-gradient(135deg, #a1ffce 0%, #faffd1 100%); }
+.level-bg-30 { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); }
+
+.level-bg-31 { background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%); }
+.level-bg-32 { background: linear-gradient(135deg, #5ee7df 0%, #b490ca 100%); }
+.level-bg-33 { background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); }
+.level-bg-34 { background: linear-gradient(135deg, #fbc7d4 0%, #9796f0 100%); }
+.level-bg-35 { background: linear-gradient(135deg, #92fe9d 0%, #00c9ff 100%); }
+.level-bg-36 { background: linear-gradient(135deg, #fddb92 0%, #d1fdff 100%); }
+.level-bg-37 { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); }
+.level-bg-38 { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); }
+.level-bg-39 { background: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%); }
+.level-bg-40 { background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%); }
+
+.level-bg-41 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.level-bg-42 { background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%); }
+.level-bg-43 { background: linear-gradient(135deg, #00c6fb 0%, #005bea 100%); }
+.level-bg-44 { background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%); }
+.level-bg-45 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+.level-bg-46 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+.level-bg-47 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+.level-bg-48 { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); }
+.level-bg-49 { background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%); }
+.level-bg-50 { background: linear-gradient(135deg, #0ba360 0%, #3cba92 100%); }
+
+.level-bg-51 { background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%); }
+.level-bg-52 { background: linear-gradient(135deg, #c1dfc4 0%, #deecdd 100%); }
+.level-bg-53 { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+.level-bg-54 { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); }
+.level-bg-55 { background: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%); }
+.level-bg-56 { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); }
+.level-bg-57 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.level-bg-58 { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
+.level-bg-59 { background: linear-gradient(135deg, #a1ffce 0%, #faffd1 100%); }
+.level-bg-60 { background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%); }
+
+.level-bg-61 { background: linear-gradient(135deg, #ff8177 0%, #ff867a 100%); }
+.level-bg-62 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+.level-bg-63 { background: linear-gradient(135deg, #00c6fb 0%, #005bea 100%); }
+.level-bg-64 { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+.level-bg-65 { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); }
+.level-bg-66 { background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%); }
+.level-bg-67 { background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%); }
+.level-bg-68 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+.level-bg-69 { background: linear-gradient(135deg, #a6c0fe 0%, #f68084 100%); }
+.level-bg-70 { background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%); }
+
+.level-bg-71 { background: linear-gradient(135deg, #fddb92 0%, #d1fdff 100%); }
+.level-bg-72 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+.level-bg-73 { background: linear-gradient(135deg, #c1dfc4 0%, #deecdd 100%); }
+.level-bg-74 { background: linear-gradient(135deg, #0ba360 0%, #3cba92 100%); }
+.level-bg-75 { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); }
+.level-bg-76 { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); }
+.level-bg-77 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.level-bg-78 { background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%); }
+.level-bg-79 { background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%); }
+.level-bg-80 { background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%); }
+
+.level-bg-81 { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); }
+.level-bg-82 { background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%); }
+.level-bg-83 { background: linear-gradient(135deg, #00c6fb 0%, #005bea 100%); }
+.level-bg-84 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+.level-bg-85 { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+.level-bg-86 { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); }
+.level-bg-87 { background: linear-gradient(135deg, #ff8177 0%, #ff867a 100%); }
+.level-bg-88 { background: linear-gradient(135deg, #a1ffce 0%, #faffd1 100%); }
+.level-bg-89 { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); }
+.level-bg-90 { background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%); }
+
+.level-bg-91 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.level-bg-92 { background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%); }
+.level-bg-93 { background: linear-gradient(135deg, #00c6fb 0%, #005bea 100%); }
+.level-bg-94 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+.level-bg-95 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+.level-bg-96 { background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%); }
+.level-bg-97 { background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%); }
+.level-bg-98 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+.level-bg-99 { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); }
+.level-bg-100 { background: linear-gradient(135deg, #fddb92 0%, #d1fdff 100%); }
+
 
 /* Media queries para responsividad */
 @media (max-width: 480px) {

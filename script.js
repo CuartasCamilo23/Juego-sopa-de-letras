@@ -641,7 +641,200 @@ const levels = [
         "BRAZO": {start: {row: 0, col: 3}, end: {row: 0, col: 7}, direction: "horizontal"}
     },
     bgClass: "level-bg-23"
+},
+// Nivel 24 - Piratas
+ {
+    theme: "Piratas",
+    words: ["BARCO", "TESORO", "MAPA", "ESPADA", "ISLA", "BRUJULA", "CAPITAN"],
+    grid: [
+        "BMAPAMKLIO",
+        "AWECAPITAN",
+        "ROROSETNOB",
+        "CJKIOSAQWR",
+        "OSLAVPRGTU",
+        "ZXCVBAUJUJ",
+        "QAZWSDEDCU",
+        "POISLAREWL",
+        "LKJHGFDSAA",
+        "MNBCXZQWER"
+    ],
+    positions: {
+        "BARCO": {start: {row: 2, col: 0}, end: {row: 2, col: 4}, direction: "horizontal"},
+        "TESORO": {start: {row: 0, col: 4}, end: {row: 0, col: 9}, direction: "horizontal"},
+        "MAPA": {start: {row: 0, col: 1}, end: {row: 0, col: 4}, direction: "horizontal"},
+        "ESPADA": {start: {row: 3, col: 0}, end: {row: 3, col: 5}, direction: "horizontal"},
+        "ISLA": {start: {row: 4, col: 0}, end: {row: 4, col: 3}, direction: "horizontal"},
+        "BRUJULA": {start: {row: 5, col: 3}, end: {row: 5, col: 9}, direction: "horizontal"},
+        "CAPITAN": {start: {row: 1, col: 3}, end: {row: 1, col: 9}, direction: "horizontal"}
+    },
+    bgClass: "level-bg-24"
+},
+// Nivel 25 - Videojuegos
+{
+    theme: "Videojuegos",
+    words: ["MARIO", "ZELDA", "SONIC", "FORTNITE", "PACMAN", "TETRIS", "MINECRAFT"],
+    grid: [
+        "OIRAMPLKJH",
+        "QETINTROFN",
+        "ASDFNJSHAU",
+        "ZXCVBNSQWE",
+        "PLKEANITYA",
+        "CNJKOURITD",
+        "IONILGTJKL",
+        "NAMCAPEDFE",
+        "OOIUYTTEWZ",
+        "STFARCENIM"
+    ],
+    positions: {
+        "MARIO": {start: {row: 0, col: 0}, end: {row: 0, col: 4}, direction: "horizontal"},
+        "ZELDA": {start: {row: 2, col: 4}, end: {row: 2, col: 8}, direction: "horizontal"},
+        "SONIC": {start: {row: 6, col: 0}, end: {row: 6, col: 4}, direction: "horizontal"},
+        "FORTNITE": {start: {row: 1, col: 2}, end: {row: 1, col: 9}, direction: "horizontal"},
+        "PACMAN": {start: {row: 4, col: 0}, end: {row: 4, col: 5}, direction: "horizontal"},
+        "TETRIS": {start: {row: 1, col: 3}, end: {row: 1, col: 8}, direction: "horizontal"},
+        "MINECRAFT": {start: {row: 5, col: 0}, end: {row: 5, col: 8}, direction: "horizontal"}
+    },
+    bgClass: "level-bg-25"
+},
+// Nivel 26 - Medicina
+{
+    theme: "Medicina",
+    words: ["DOCTOR", "ENFERMERA", "HOSPITAL", "VACUNA", "JERINGA", "PASTILLA", "CURA"],
+    grid: [
+        "DOCTORQWEA",
+        "LPASTILLAE",
+        "OAGNIREJDN",
+        "SDFGRTILLF",
+        "HOSPITALYE",
+        "JERINGÑBNR",
+        "ZXCVBNMLKM",
+        "QANUCAVIOE",
+        "ASDFGHJKLR",
+        "CURAZXCVBA"
+    ],
+    positions: {
+        "DOCTOR": {start: {row: 0, col: 0}, end: {row: 0, col: 5}, direction: "horizontal"},
+        "ENFERMERA": {start: {row: 2, col: 2}, end: {row: 2, col: 10}, direction: "horizontal"},
+        "HOSPITAL": {start: {row: 4, col: 0}, end: {row: 4, col: 7}, direction: "horizontal"},
+        "VACUNA": {start: {row: 1, col: 4}, end: {row: 1, col: 9}, direction: "horizontal"},
+        "JERINGA": {start: {row: 5, col: 0}, end: {row: 5, col: 6}, direction: "horizontal"},
+        "PASTILLA": {start: {row: 3, col: 2}, end: {row: 3, col: 9}, direction: "horizontal"},
+        "CURA": {start: {row: 9, col: 0}, end: {row: 9, col: 3}, direction: "horizontal"}
+    },
+    bgClass: "level-bg-26"
+},
+// Nivel 27 - Tecnología
+{
+    theme: "Tecnología",
+    words: ["COMPUTADOR", "INTERNET", "ROBOT", "SOFTWARE", "HARDWARE", "CABLE", "RED"],
+    grid: [
+        "IAMAFLYKIT",
+        "AQWERTYUIE",
+        "DHARDWAREN",
+        "COMPUTADOR",
+        "ZXCVBNMLKE",
+        "QWSOGEERYT",
+        "RTYUIOPADN",
+        "FCABLENMEI",
+        "GHJKTOBORT",
+        "ZRERAWTFOS"
+    ],
+    positions: {
+        "COMPUTADOR": {start: {row: 0, col: 0}, end: {row: 0, col: 9}, direction: "horizontal"},
+        "INTERNET": {start: {row: 1, col: 1}, end: {row: 8, col: 1}, direction: "vertical"},
+        "ROBOT": {start: {row: 2, col: 1}, end: {row: 2, col: 5}, direction: "horizontal"},
+        "SOFTWARE": {start: {row: 5, col: 2}, end: {row: 5, col: 9}, direction: "horizontal"},
+        "HARDWARE": {start: {row: 3, col: 3}, end: {row: 3, col: 10}, direction: "horizontal"},
+        "CABLE": {start: {row: 7, col: 1}, end: {row: 7, col: 5}, direction: "horizontal"},
+        "RED": {start: {row: 9, col: 1}, end: {row: 9, col: 3}, direction: "horizontal"}
+    },
+    bgClass: "level-bg-27"
+},
+// Nivel 28 - Mitología Nórdica
+{
+    theme: "Mitología Nórdica",
+    words: ["ODIN", "THOR", "LOKI", "VALHALLA", "RAGNAROK", "FREYA", "ASGARD"],
+    grid: [
+        "TNUYTFDRAS",
+        "QROHTYUIOP",
+        "VALHALLAUI",
+        "ASDFGHJSLÑ",
+        "ZXCVBNMGSD",
+        "LIDFGTGAJA",
+        "KORANGARMY",
+        "QAZWSXEDCE",
+        "ODINPLKJHR",
+        "MNLOKIZQWF"
+    ],
+    positions: {
+        "ODIN": {start: {row: 8, col: 0}, end: {row: 8, col: 3}, direction: "horizontal"},
+        "THOR": {start: {row: 0, col: 0}, end: {row: 0, col: 3}, direction: "horizontal"},
+        "LOKI": {start: {row: 0, col: 4}, end: {row: 0, col: 7}, direction: "horizontal"},
+        "VALHALLA": {start: {row: 2, col: 0}, end: {row: 2, col: 7}, direction: "horizontal"},
+        "RAGNAROK": {start: {row: 6, col: 0}, end: {row: 6, col: 7}, direction: "horizontal"},
+        "FREYA": {start: {row: 5, col: 0}, end: {row: 5, col: 4}, direction: "horizontal"},
+        "ASGARD": {start: {row: 4, col: 2}, end: {row: 4, col: 7}, direction: "horizontal"}
+    },
+    bgClass: "level-bg-28"
+},
+// Nivel 29 - Inventos
+{
+    theme: "Inventos",
+    words: ["TELEFONO", "AVION", "IMPRENTA", "BOMBILLA", "RADIO", "TELEVISION", "RUEDA"],
+    grid: [
+        "RJSUASGSAT",
+        "AWERTYUIOE",
+        "DSOIDARKLL",
+        "ISKAHJSJRE",
+        "ALLIBMOBFF",
+        "IMPRENTAHO",
+        "QAZWSXEDCN",
+        "RUEDADARGO",
+        "PLMNONOIVA",
+        "TELEVISION"
+    ],
+    positions: {
+        "TELEFONO": {start: {row: 0, col: 0}, end: {row: 0, col: 7}, direction: "horizontal"},
+        "AVION": {start: {row: 1, col: 0}, end: {row: 1, col: 4}, direction: "horizontal"},
+        "IMPRENTA": {start: {row: 5, col: 0}, end: {row: 5, col: 7}, direction: "horizontal"},
+        "BOMBILLA": {start: {row: 3, col: 0}, end: {row: 3, col: 7}, direction: "horizontal"},
+        "RADIO": {start: {row: 3, col: 8}, end: {row: 3, col: 4}, direction: "reverse-horizontal"},
+        "TELEVISION": {start: {row: 9, col: 0}, end: {row: 9, col: 9}, direction: "horizontal"},
+        "COMPUTADOR": {start: {row: 7, col: 0}, end: {row: 7, col: 9}, direction: "horizontal"}
+    },
+    bgClass: "level-bg-29"
+},
+// Nivel 30 - Océanos
+{
+    theme: "Océanos",
+    words: ["PACIFICO", "SALADO", "INDICO", "ARTICO", "ANTARTICO", "CORAL", "OLAS"],
+    grid: [
+        "PAPOIREIXA",
+        "AOERTYUIOR",
+        "CCDARTICOT",
+        "IICOBNMNBI",
+        "FTTCRTICOC",
+        "IRJIGFDSAO",
+        "CAODALASSN",
+        "OTJNLCORAL",
+        "QNZISWEDLV",
+        "IAGERYYWOR"
+    ],
+    positions: {
+        "PACIFICO": {start: {row: 0, col: 0}, end: {row: 0, col: 7}, direction: "horizontal"},
+        "ATLANTICO": {start: {row: 9, col: 0}, end: {row: 9, col: 8}, direction: "horizontal"},
+        "INDICO": {start: {row: 1, col: 2}, end: {row: 6, col: 2}, direction: "vertical"},
+        "ARTICO": {start: {row: 2, col: 3}, end: {row: 2, col: 8}, direction: "horizontal"},
+        "ANTARTICO": {start: {row: 4, col: 0}, end: {row: 4, col: 8}, direction: "horizontal"},
+        "CORAL": {start: {row: 7, col: 5}, end: {row: 7, col: 9}, direction: "horizontal"},
+        "OLAS": {start: {row: 6, col: 5}, end: {row: 6, col: 8}, direction: "horizontal"}
+    },
+    bgClass: "level-bg-30"
 }
+
+
+
+
 
 
 
