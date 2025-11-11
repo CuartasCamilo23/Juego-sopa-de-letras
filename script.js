@@ -41,14 +41,7 @@ const levels = [
             "NARANJAQWN",
             "QWERTYUIOA"
         ],
-        positions: {
-            "MANZANA": {start: {row: 0, col: 0}, end: {row: 0, col: 6}, direction: "horizontal"},
-            "PLATANO": {start: {row: 1, col: 5}, end: {row: 7, col: 5}, direction: "vertical"},
-            "NARANJA": {start: {row: 8, col: 0}, end: {row: 8, col: 6}, direction: "horizontal"},
-            "FRESA": {start: {row: 5, col: 2}, end: {row: 5, col: 6}, direction: "horizontal"},
-            "PERA": {start: {row: 4, col: 2}, end: {row: 4, col: 5}, direction: "horizontal"},
-            "UVA": {start: {row: 6, col: 5}, end: {row: 6, col: 7}, direction: "horizontal"}
-        },
+      
         bgClass: "level-bg-1"
     },
     // Nivel 2 - Animales
@@ -67,14 +60,7 @@ const levels = [
             "TIGREASDFT",
             "ZXCVBNMLKO"
         ],
-        positions: {
-            "PERRO": {start: {row: 1, col: 1}, end: {row: 1, col: 5}, direction: "horizontal"},
-            "GATO": {start: {row: 2, col: 0}, end: {row: 2, col: 3}, direction: "horizontal"},
-            "LEON": {start: {row: 7, col: 0}, end: {row: 7, col: 3}, direction: "horizontal"},
-            "TIGRE": {start: {row: 8, col: 0}, end: {row: 8, col: 4}, direction: "horizontal"},
-            "OSO": {start: {row: 4, col: 3}, end: {row: 4, col: 5}, direction: "horizontal"},
-            "LOBO": {start: {row: 6, col: 6}, end: {row: 3, col: 6}, direction: "vertical"}
-        },
+
         bgClass: "level-bg-2"
     },
     // Nivel 3 - Colores
@@ -93,14 +79,7 @@ const levels = [
             "QWGRISDNBL",
             "ASDFGHJKOÑ"
         ],
-        positions: {
-            "ROJO": {start: {row: 2, col: 1}, end: {row: 2, col: 4}, direction: "horizontal"},
-            "AZUL": {start: {row: 3, col: 0}, end: {row: 3, col: 3}, direction: "horizontal"},
-            "VERDE": {start: {row: 4, col: 2}, end: {row: 4, col: 6}, direction: "horizontal"},
-            "NEGRO": {start: {row: 7, col: 0}, end: {row: 7, col: 4}, direction: "horizontal"},
-            "BLANCO": {start: {row: 7, col: 5}, end: {row: 7, col: 9}, direction: "vertical"},
-            "GRIS": {start: {row: 8, col: 2}, end: {row: 8, col: 5}, direction: "horizontal"}
-        },
+     
         bgClass: "level-bg-3"
     },
     // Nivel 4 - Países
@@ -119,14 +98,7 @@ const levels = [
             "QWERTYIDIV",
             "ITALIASDQQ"
         ],
-        positions: {
-            "ESPAÑA": {start: {row: 1, col: 0}, end: {row: 1, col: 5}, direction: "horizontal"},
-            "FRANCIA": {start: {row: 4, col: 0}, end: {row: 4, col: 6}, direction: "horizontal"},
-            "ITALIA": {start: {row: 9, col: 0}, end: {row: 9, col: 5}, direction: "horizontal"},
-            "CHINA": {start: {row: 6, col: 0}, end: {row: 6, col: 4}, direction: "horizontal"},
-            "BRASIL": {start: {row: 6, col: 5}, end: {row: 6, col: 9}, direction: "horizontal"},
-            "INDIA": {start: {row: 8, col: 6}, end: {row: 8, col: 9}, direction: "horizontal"}
-        },
+      
         bgClass: "level-bg-4"
     },
     // Nivel 5 - Planetas
@@ -145,14 +117,7 @@ const levels = [
             "URANOLKJHO",
             "POIUYTREWQ"
         ],
-        positions: {
-            "TIERRA": {start: {row: 4, col: 0}, end: {row: 4, col: 5}, direction: "horizontal"},
-            "MARTE": {start: {row: 2, col: 0}, end: {row: 2, col: 4}, direction: "horizontal"},
-            "VENUS": {start: {row: 5, col: 0}, end: {row: 5, col: 4}, direction: "horizontal"},
-            "JUPITER": {start: {row: 0, col: 0}, end: {row: 0, col: 6}, direction: "horizontal"},
-            "SATURNO": {start: {row: 6, col: 3}, end: {row: 6, col: 9}, direction: "horizontal"},
-            "URANO": {start: {row: 8, col: 0}, end: {row: 8, col: 4}, direction: "horizontal"}
-        },
+       
         bgClass: "level-bg-5"
     },
     // Nivel 6
@@ -171,14 +136,7 @@ const levels = [
         "JZQBMBOXEO",
         "JUDOXKJHGF"
     ],
-    positions: {
-        "FUTBOL": {start: {row: 0, col: 0}, end: {row: 0, col: 5}, direction: "horizontal"},
-        "TENIS": {start: {row: 1, col: 8}, end: {row: 5, col: 8}, direction: "vertical"},
-        "GOLF": {start: {row: 6, col: 2}, end: {row: 9, col: 2}, direction: "vertical"},
-        "SURF": {start: {row: 7, col: 6}, end: {row: 7, col: 9}, direction: "horizontal"},
-        "BOXEO": {start: {row: 8, col: 5}, end: {row: 8, col: 9}, direction: "horizontal"},
-        "JUDO": {start: {row: 9, col: 0}, end: {row: 9, col: 3}, direction: "horizontal"}
-    },
+   
     bgClass: "level-bg-9"
 },
  // Nivel 7 - Profesiones
@@ -197,14 +155,7 @@ const levels = [
         "PILOTODRGA",
         "COCINEROLK"
     ],
-    positions: {
-        "DOCTOR":   {start: {row: 0, col: 0}, end: {row: 5, col: 0}, direction: "vertical"},
-        "ACTOR":    {start: {row: 0, col: 5}, end: {row: 4, col: 5}, direction: "vertical"},
-        "MAESTRO":  {start: {row: 6, col: 0}, end: {row: 6, col: 6}, direction: "horizontal"},
-        "BOMBERO":  {start: {row: 3, col: 9}, end: {row: 9, col: 9}, direction: "vertical"},
-        "PILOTO":   {start: {row: 8, col: 0}, end: {row: 8, col: 5}, direction: "horizontal"},
-        "COCINERO": {start: {row: 9, col: 0}, end: {row: 9, col: 7}, direction: "horizontal"}
-    },
+   
     bgClass: "level-bg-7"
 },
     
@@ -224,14 +175,7 @@ const levels = [
     "CAMISAQOER",  // CAMISA horizontal
     "ALKSJDHGFD"
   ],
-  positions: {
-    "CAMISA":   {start: {row: 8, col: 1}, end: {row: 8, col: 6}, direction: "horizontal"},
-    "FALDA":    {start: {row: 5, col: 2}, end: {row: 5, col: 6}, direction: "horizontal"},
-    "ZAPATOS":  {start: {row: 0, col: 0}, end: {row: 0, col: 6}, direction: "horizontal"},
-    "ABRIGO":   {start: {row: 6, col: 1}, end: {row: 1, col: 1}, direction: "vertical"},
-    "GORRA":    {start: {row: 2, col: 1}, end: {row: 6, col: 1}, direction: "vertical"},
-    "VESTIDO":  {start: {row: 4, col: 2}, end: {row: 4, col: 8}, direction: "horizontal"}
-  },
+ 
   bgClass: "level-bg-8"
 },
 
@@ -251,14 +195,7 @@ const levels = [
     "JQWEARPAIO",  
     "OPIULKJHGF"
   ],
-  positions: {
-    "PIANO":   {start: {row: 0, col: 0}, end: {row: 0, col: 4}, direction: "vertical"},
-    "FLAUTA": {start: {row: 0, col: 1}, end: {row: 0, col: 6}, direction: "horizontal"},
-    "VIOLIN": {start: {row: 6, col: 1}, end: {row: 6, col: 6}, direction: "horizontal"},
-    "TAMBOR": {start: {row: 0, col: 0}, end: {row: 5, col: 0}, direction: "horizontal"},
-    "BAJO":   {start: {row: 7, col: 0}, end: {row: 7, col: 3}, direction: "Vertical"},
-    "ARPA":   {start: {row: 8, col: 5}, end: {row: 8, col: 8}, direction: "horizontal"},
-  },
+  
   bgClass: "level-bg-9"
 },
 
@@ -278,14 +215,7 @@ const levels = [
     "SVBCXMEMTY",
     "AASWEACAFR"
   ],
-  positions: {
-    "MESA":    {start: {row: 0, col: 0}, end: {row: 0, col: 3}, direction: "horizontal"},
-    "SILLA":   {start: {row: 2, col: 0}, end: {row: 2, col: 4}, direction: "horizontal"},
-    "SOFA":    {start: {row: 4, col: 0}, end: {row: 4, col: 3}, direction: "horizontal"},
-    "CAMA":    {start: {row: 3, col: 0}, end: {row: 3, col: 3}, direction: "horizontal"},
-    "ESPEJO":  {start: {row: 6, col: 2}, end: {row: 6, col: 7}, direction: "horizontal"},
-    "LAMPARA": {start: {row: 7, col: 1}, end: {row: 7, col: 7}, direction: "horizontal"}
-  },
+ 
   bgClass: "level-bg-10"
 },
 
@@ -305,14 +235,7 @@ const levels = [
     "LKJHGFDSAA",
     "MARGARITAK"     // JAZMIN horizontal
   ],
-  positions: {
-    "ROSA":      {start: {row: 0, col: 0}, end: {row: 0, col: 3}, direction: "horizontal"},
-    "LIRIO":     {start: {row: 1, col: 3}, end: {row: 1, col: 7}, direction: "horizontal"},
-    "MARGARITA": {start: {row: 2, col: 2}, end: {row: 2, col: 11}, direction: "horizontal"},
-    "TULIPAN":   {start: {row: 5, col: 0}, end: {row: 5, col: 6}, direction: "horizontal"},
-    "ORQUIDEA":  {start: {row: 6, col: 3}, end: {row: 6, col: 10}, direction: "horizontal"},
-    "JAZMIN":    {start: {row: 9, col: 1}, end: {row: 9, col: 6}, direction: "horizontal"}
-  },
+ 
   bgClass: "level-bg-11"
 },
 
@@ -332,14 +255,7 @@ const levels = [
     "QWENIDRAJP",
     "MNBALCONJH"
   ],
-  positions: {
-    "COCINA":     {start: {row: 0, col: 0}, end: {row: 0, col: 5}, direction: "horizontal"},
-    "SALA":       {start: {row: 1, col: 6}, end: {row: 1, col: 9}, direction: "horizontal"},
-    "JARDIN":     {start: {row: 2, col: 3}, end: {row: 2, col: 8}, direction: "horizontal"},
-    "DORMITORIO": {start: {row: 3, col: 0}, end: {row: 3, col: 9}, direction: "horizontal"},
-    "GARAJE":     {start: {row: 6, col: 6}, end: {row: 6, col: 11}, direction: "horizontal"},
-    "BAÑO":       {start: {row: 7, col: 0}, end: {row: 7, col: 3}, direction: "horizontal"}
-  },
+
   bgClass: "level-bg-12"
 },
 
@@ -359,15 +275,7 @@ const levels = [
     "METROCXCTB",     // METRO (col 0)
     "MNBVCOZLOJ"
   ],
-  positions: {
-    "COCHE":     {start: {row: 4, col: 0}, end: {row: 4, col: 4}, direction: "horizontal"},
-    "TREN":      {start: {row: 0, col: 5}, end: {row: 0, col: 8}, direction: "horizontal"},
-    "AVION":     {start: {row: 0, col: 0}, end: {row: 0, col: 4}, direction: "horizontal"},
-    "BARCO":     {start: {row: 7, col: 0}, end: {row: 7, col: 4}, direction: "horizontal"},
-    "MOTO":      {start: {row: 1, col: 5}, end: {row: 1, col: 8}, direction: "horizontal"},
-    "BICICLETA": {start: {row: 2, col: 0}, end: {row: 2, col: 8}, direction: "horizontal"},
-    "METRO":     {start: {row: 8, col: 0}, end: {row: 8, col: 4}, direction: "horizontal"}
-  },
+
   bgClass: "level-bg-13"
 },
 // Nivel 14 - Comidas
@@ -386,15 +294,7 @@ const levels = [
     "PIZZARROZL",    // PIZZA (col 0), ARROZ (col 5)
     "LKJHGFDSAQ"
   ],
-  positions: {
-    "HAMBURGUESA": {start: {row: 0, col: 0}, end: {row: 0, col: 10}, direction: "horizontal"},
-    "ENSALADA":    {start: {row: 2, col: 0}, end: {row: 2, col: 7}, direction: "horizontal"},
-    "TACO":        {start: {row: 4, col: 0}, end: {row: 4, col: 3}, direction: "horizontal"},
-    "SOPA":        {start: {row: 4, col: 4}, end: {row: 4, col: 7}, direction: "horizontal"},
-    "PASTA":       {start: {row: 6, col: 0}, end: {row: 6, col: 4}, direction: "horizontal"},
-    "PIZZA":       {start: {row: 8, col: 0}, end: {row: 8, col: 4}, direction: "horizontal"},
-    "ARROZ":       {start: {row: 8, col: 5}, end: {row: 8, col: 9}, direction: "horizontal"}
-  },
+
   bgClass: "level-bg-14"
 },
 // Nivel 15 - Escuela
@@ -413,15 +313,7 @@ const levels = [
     "ROLOCLAPOZ",    // ESCRITORIO (col 0)
     "LKJHGFDSAA"
   ],
-  positions: {
-    "CUADERNO":   {start: {row: 0, col: 0}, end: {row: 0, col: 7}, direction: "horizontal"},
-    "BORRADOR":   {start: {row: 2, col: 0}, end: {row: 2, col: 7}, direction: "horizontal"},
-    "LAPIZ":      {start: {row: 4, col: 0}, end: {row: 4, col: 4}, direction: "horizontal"},
-    "REGLA":      {start: {row: 5, col: 0}, end: {row: 5, col: 4}, direction: "horizontal"},
-    "MOCHILA":    {start: {row: 6, col: 0}, end: {row: 6, col: 6}, direction: "horizontal"},
-    "TIZA":       {start: {row: 7, col: 7}, end: {row: 7, col: 10}, direction: "horizontal"},
-    "ESCRITORIO": {start: {row: 8, col: 0}, end: {row: 8, col: 9}, direction: "horizontal"}
-  },
+
   bgClass: "level-bg-15"
 },
 
@@ -441,15 +333,7 @@ const levels = [
     "NUBAIZZQWO",   // GRANIZO (fila 8)
     "ZVIENTOFLS"    // SOL (fila 9, col 6 a 8)
   ],
-  positions: {
-    "TORMENTA": {start: {row: 0, col: 0}, end: {row: 0, col: 7}, direction: "horizontal"},
-    "VIENTO":   {start: {row: 1, col: 8}, end: {row: 6, col: 8}, direction: "vertical"},
-    "NUBLADO":  {start: {row: 2, col: 0}, end: {row: 2, col: 6}, direction: "horizontal"},
-    "LLUVIA":   {start: {row: 4, col: 0}, end: {row: 4, col: 5}, direction: "horizontal"},
-    "NIEVE":    {start: {row: 6, col: 0}, end: {row: 6, col: 4}, direction: "horizontal"},
-    "GRANIZO":  {start: {row: 8, col: 0}, end: {row: 8, col: 6}, direction: "horizontal"},
-    "SOL":      {start: {row: 9, col: 6}, end: {row: 9, col: 8}, direction: "horizontal"}
-  },
+ 
   bgClass: "level-bg-16"
 },
 
@@ -469,15 +353,7 @@ const levels = [
     "ARDOZIHCEH",
     "PBIUYTREWA"
   ],
-  positions: {
-    "DRAGON":   {start: {row: 0, col: 0}, end: {row: 0, col: 5}, direction: "horizontal"},
-    "MAGIA":    {start: {row: 1, col: 0}, end: {row: 1, col: 4}, direction: "horizontal"},
-    "HADA":     {start: {row: 2, col: 6}, end: {row: 2, col: 9}, direction: "horizontal"},
-    "CASTILLO": {start: {row: 4, col: 0}, end: {row: 4, col: 7}, direction: "horizontal"},
-    "BRUJA":    {start: {row: 5, col: 5}, end: {row: 5, col: 9}, direction: "horizontal"},
-    "HECHIZO":  {start: {row: 6, col: 3}, end: {row: 6, col: 9}, direction: "horizontal"},
-    "PRINCIPE": {start: {row: 7, col: 2}, end: {row: 7, col: 9}, direction: "horizontal"}
-  },
+ 
   bgClass: "level-bg-17"
 },
 // Nivel 18 - Ciencias
@@ -496,15 +372,7 @@ const levels = [
         "AFTEROYUEA",
         "YHLQMDLGKK"
     ],
-    positions: {
-        "QUIMICA": {start: {row: 0, col: 0}, end: {row: 0, col: 6}, direction: "horizontal"},
-        "FISICA": {start: {row: 2, col: 0}, end: {row: 2, col: 5}, direction: "horizontal"},
-        "BIOLOGIA": {start: {row: 7, col: 0}, end: {row: 7, col: 7}, direction: "horizontal"},
-        "ATOMO": {start: {row: 3, col: 5}, end: {row: 3, col: 9}, direction: "horizontal"},
-        "CELULA": {start: {row: 4, col: 0}, end: {row: 4, col: 5}, direction: "horizontal"},
-        "LABORATORIO": {start: {row: 9, col: 0}, end: {row: 9, col: 10}, direction: "horizontal"},
-        "ENERGIA": {start: {row: 8, col: 2}, end: {row: 8, col: 8}, direction: "horizontal"}
-    },
+   
     bgClass: "level-bg-18"
 },
 // Nivel 19 - Cine
@@ -523,15 +391,7 @@ const levels = [
         "ACTORNEASD",
         "TGBDANECSE"
     ],
-    positions: {
-        "PELICULA": {start: {row: 0, col: 4}, end: {row: 0, col: 11}, direction: "horizontal"},
-        "GUION": {start: {row: 2, col: 4}, end: {row: 2, col: 8}, direction: "horizontal"},
-        "ACTOR": {start: {row: 3, col: 6}, end: {row: 3, col: 10}, direction: "horizontal"},
-        "ESCENA": {start: {row: 5, col: 0}, end: {row: 5, col: 5}, direction: "horizontal"},
-        "CAMARA": {start: {row: 1, col: 3}, end: {row: 6, col: 3}, direction: "vertical"},
-        "CINE": {start: {row: 8, col: 3}, end: {row: 8, col: 6}, direction: "horizontal"},
-        "DIRECTOR": {start: {row: 9, col: 3}, end: {row: 9, col: 11}, direction: "horizontal"}
-    },
+   
     bgClass: "level-bg-19"
 },
 // Nivel 20 - Mitología
@@ -550,15 +410,7 @@ const levels = [
         "AKJOUHERTO",
         "MAREHZXCVP"
     ],
-    positions: {
-        "ZEUS": {start: {row: 4, col: 7}, end: {row: 4, col: 10}, direction: "horizontal"},
-        "HADES": {start: {row: 9, col: 0}, end: {row: 9, col: 4}, direction: "horizontal"},
-        "ODIN": {start: {row: 2, col: 6}, end: {row: 2, col: 9}, direction: "horizontal"},
-        "THOR": {start: {row: 3, col: 0}, end: {row: 3, col: 3}, direction: "horizontal"},
-        "ANUBIS": {start: {row: 5, col: 0}, end: {row: 5, col: 5}, direction: "horizontal"},
-        "AFRODITA": {start: {row: 0, col: 4}, end: {row: 0, col: 11}, direction: "horizontal"},
-        "APOLO": {start: {row: 8, col: 0}, end: {row: 8, col: 4}, direction: "horizontal"}
-    },
+   
     bgClass: "level-bg-20"
 },
 // Nivel 21 - La Ciudad
@@ -577,15 +429,7 @@ const levels = [
         "UYEUQRAPEL",
         "PUENTEJKLP"
     ],
-    positions: {
-        "PLAZA": {start: {row: 0, col: 0}, end: {row: 0, col: 4}, direction: "horizontal"},
-        "SEMÁFORO": {start: {row: 3, col: 1}, end: {row: 3, col: 8}, direction: "horizontal"},
-        "EDIFICIO": {start: {row: 4, col: 0}, end: {row: 4, col: 7}, direction: "horizontal"},
-        "MERCADO": {start: {row: 6, col: 0}, end: {row: 6, col: 6}, direction: "horizontal"},
-        "PUENTE": {start: {row: 9, col: 0}, end: {row: 9, col: 5}, direction: "horizontal"},
-        "PARQUE": {start: {row: 2, col: 0}, end: {row: 7, col: 0}, direction: "vertical"},
-        "CALLE": {start: {row: 0, col: 1}, end: {row: 4, col: 1}, direction: "vertical"}
-    },
+   
     bgClass: "level-bg-21"
 },
 // Nivel 22 - Herramientas
@@ -604,15 +448,7 @@ const levels = [
         "AIAMILOERS",
         "MIDLZXCVBN"
     ],
-    positions: {
-        "TALADRO": {start: {row: 0, col: 3}, end: {row: 0, col: 9}, direction: "horizontal"},
-        "CLAVO": {start: {row: 2, col: 0}, end: {row: 2, col: 4}, direction: "horizontal"},
-        "LLAVE": {start: {row: 4, col: 0}, end: {row: 4, col: 4}, direction: "horizontal"},
-        "MARTILLO": {start: {row: 6, col: 0}, end: {row: 6, col: 8}, direction: "horizontal"},
-        "TIJERAS": {start: {row: 8, col: 4}, end: {row: 8, col: 11}, direction: "horizontal"},
-        "SIERRA": {start: {row: 0, col: 2}, end: {row: 5, col: 2}, direction: "vertical"},
-        "LIMA": {start: {row: 9, col: 0}, end: {row: 6, col: 0}, direction: "vertical"}
-    },
+   
     bgClass: "level-bg-22"
 },
 // Nivel 23 - Cuerpo Humano
@@ -631,15 +467,7 @@ const levels = [
         "MNOJJXZQIA",
         "AOZARBDLPI"
     ],
-    positions: {
-        "CABEZA": {start: {row: 0, col: 3}, end: {row: 5, col: 3}, direction: "vertical"},
-        "CORAZON": {start: {row: 9, col: 0}, end: {row: 9, col: 6}, direction: "horizontal"},
-        "PIERNA": {start: {row: 4, col: 0}, end: {row: 4, col: 5}, direction: "horizontal"},
-        "MANO": {start: {row: 1, col: 3}, end: {row: 1, col: 6}, direction: "horizontal"},
-        "OJO": {start: {row: 2, col: 4}, end: {row: 2, col: 6}, direction: "horizontal"},
-        "HUESO": {start: {row: 6, col: 5}, end: {row: 6, col: 9}, direction: "horizontal"},
-        "BRAZO": {start: {row: 0, col: 3}, end: {row: 0, col: 7}, direction: "horizontal"}
-    },
+ 
     bgClass: "level-bg-23"
 },
 // Nivel 24 - Piratas
@@ -658,15 +486,7 @@ const levels = [
         "LKJHGFDSAA",
         "MNBCXZQWER"
     ],
-    positions: {
-        "BARCO": {start: {row: 2, col: 0}, end: {row: 2, col: 4}, direction: "horizontal"},
-        "TESORO": {start: {row: 0, col: 4}, end: {row: 0, col: 9}, direction: "horizontal"},
-        "MAPA": {start: {row: 0, col: 1}, end: {row: 0, col: 4}, direction: "horizontal"},
-        "ESPADA": {start: {row: 3, col: 0}, end: {row: 3, col: 5}, direction: "horizontal"},
-        "ISLA": {start: {row: 4, col: 0}, end: {row: 4, col: 3}, direction: "horizontal"},
-        "BRUJULA": {start: {row: 5, col: 3}, end: {row: 5, col: 9}, direction: "horizontal"},
-        "CAPITAN": {start: {row: 1, col: 3}, end: {row: 1, col: 9}, direction: "horizontal"}
-    },
+  
     bgClass: "level-bg-24"
 },
 // Nivel 25 - Videojuegos
@@ -685,15 +505,7 @@ const levels = [
         "OOIUYTTEWZ",
         "STFARCENIM"
     ],
-    positions: {
-        "MARIO": {start: {row: 0, col: 0}, end: {row: 0, col: 4}, direction: "horizontal"},
-        "ZELDA": {start: {row: 2, col: 4}, end: {row: 2, col: 8}, direction: "horizontal"},
-        "SONIC": {start: {row: 6, col: 0}, end: {row: 6, col: 4}, direction: "horizontal"},
-        "FORTNITE": {start: {row: 1, col: 2}, end: {row: 1, col: 9}, direction: "horizontal"},
-        "PACMAN": {start: {row: 4, col: 0}, end: {row: 4, col: 5}, direction: "horizontal"},
-        "TETRIS": {start: {row: 1, col: 3}, end: {row: 1, col: 8}, direction: "horizontal"},
-        "MINECRAFT": {start: {row: 5, col: 0}, end: {row: 5, col: 8}, direction: "horizontal"}
-    },
+    
     bgClass: "level-bg-25"
 },
 // Nivel 26 - Medicina
@@ -712,15 +524,7 @@ const levels = [
         "ASDFGHJKLR",
         "CURAZXCVBA"
     ],
-    positions: {
-        "DOCTOR": {start: {row: 0, col: 0}, end: {row: 0, col: 5}, direction: "horizontal"},
-        "ENFERMERA": {start: {row: 2, col: 2}, end: {row: 2, col: 10}, direction: "horizontal"},
-        "HOSPITAL": {start: {row: 4, col: 0}, end: {row: 4, col: 7}, direction: "horizontal"},
-        "VACUNA": {start: {row: 1, col: 4}, end: {row: 1, col: 9}, direction: "horizontal"},
-        "JERINGA": {start: {row: 5, col: 0}, end: {row: 5, col: 6}, direction: "horizontal"},
-        "PASTILLA": {start: {row: 3, col: 2}, end: {row: 3, col: 9}, direction: "horizontal"},
-        "CURA": {start: {row: 9, col: 0}, end: {row: 9, col: 3}, direction: "horizontal"}
-    },
+  
     bgClass: "level-bg-26"
 },
 // Nivel 27 - Tecnología
@@ -739,15 +543,7 @@ const levels = [
         "GHJKTOBORT",
         "ZRERAWTFOS"
     ],
-    positions: {
-        "COMPUTADOR": {start: {row: 0, col: 0}, end: {row: 0, col: 9}, direction: "horizontal"},
-        "INTERNET": {start: {row: 1, col: 1}, end: {row: 8, col: 1}, direction: "vertical"},
-        "ROBOT": {start: {row: 2, col: 1}, end: {row: 2, col: 5}, direction: "horizontal"},
-        "SOFTWARE": {start: {row: 5, col: 2}, end: {row: 5, col: 9}, direction: "horizontal"},
-        "HARDWARE": {start: {row: 3, col: 3}, end: {row: 3, col: 10}, direction: "horizontal"},
-        "CABLE": {start: {row: 7, col: 1}, end: {row: 7, col: 5}, direction: "horizontal"},
-        "RED": {start: {row: 9, col: 1}, end: {row: 9, col: 3}, direction: "horizontal"}
-    },
+ 
     bgClass: "level-bg-27"
 },
 // Nivel 28 - Mitología Nórdica
@@ -766,15 +562,7 @@ const levels = [
         "ODINPLKJHR",
         "MNLOKIZQWF"
     ],
-    positions: {
-        "ODIN": {start: {row: 8, col: 0}, end: {row: 8, col: 3}, direction: "horizontal"},
-        "THOR": {start: {row: 0, col: 0}, end: {row: 0, col: 3}, direction: "horizontal"},
-        "LOKI": {start: {row: 0, col: 4}, end: {row: 0, col: 7}, direction: "horizontal"},
-        "VALHALLA": {start: {row: 2, col: 0}, end: {row: 2, col: 7}, direction: "horizontal"},
-        "RAGNAROK": {start: {row: 6, col: 0}, end: {row: 6, col: 7}, direction: "horizontal"},
-        "FREYA": {start: {row: 5, col: 0}, end: {row: 5, col: 4}, direction: "horizontal"},
-        "ASGARD": {start: {row: 4, col: 2}, end: {row: 4, col: 7}, direction: "horizontal"}
-    },
+  
     bgClass: "level-bg-28"
 },
 // Nivel 29 - Inventos
@@ -793,15 +581,7 @@ const levels = [
         "PLMNONOIVA",
         "TELEVISION"
     ],
-    positions: {
-        "TELEFONO": {start: {row: 0, col: 0}, end: {row: 0, col: 7}, direction: "horizontal"},
-        "AVION": {start: {row: 1, col: 0}, end: {row: 1, col: 4}, direction: "horizontal"},
-        "IMPRENTA": {start: {row: 5, col: 0}, end: {row: 5, col: 7}, direction: "horizontal"},
-        "BOMBILLA": {start: {row: 3, col: 0}, end: {row: 3, col: 7}, direction: "horizontal"},
-        "RADIO": {start: {row: 3, col: 8}, end: {row: 3, col: 4}, direction: "reverse-horizontal"},
-        "TELEVISION": {start: {row: 9, col: 0}, end: {row: 9, col: 9}, direction: "horizontal"},
-        "COMPUTADOR": {start: {row: 7, col: 0}, end: {row: 7, col: 9}, direction: "horizontal"}
-    },
+   
     bgClass: "level-bg-29"
 },
 // Nivel 30 - Océanos
@@ -820,17 +600,9 @@ const levels = [
         "QNZISWEDLV",
         "IAGERYYWOR"
     ],
-    positions: {
-        "PACIFICO": {start: {row: 0, col: 0}, end: {row: 0, col: 7}, direction: "horizontal"},
-        "ATLANTICO": {start: {row: 9, col: 0}, end: {row: 9, col: 8}, direction: "horizontal"},
-        "INDICO": {start: {row: 1, col: 2}, end: {row: 6, col: 2}, direction: "vertical"},
-        "ARTICO": {start: {row: 2, col: 3}, end: {row: 2, col: 8}, direction: "horizontal"},
-        "ANTARTICO": {start: {row: 4, col: 0}, end: {row: 4, col: 8}, direction: "horizontal"},
-        "CORAL": {start: {row: 7, col: 5}, end: {row: 7, col: 9}, direction: "horizontal"},
-        "OLAS": {start: {row: 6, col: 5}, end: {row: 6, col: 8}, direction: "horizontal"}
-    },
+  
     bgClass: "level-bg-30"
-}
+},
 
 
 
