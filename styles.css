@@ -643,3 +643,32 @@ h1 {
     color: white;
     transform: scale(1.1);
 }
+
+/* Primera celda seleccionada en modo táctil */
+.cell.touch-first {
+    background-color: var(--accent-color);
+    color: var(--text-light);
+    transform: scale(1.15);
+    box-shadow: 0 0 0 3px rgba(255, 109, 0, 0.4);
+    z-index: 3;
+    animation: pulse-touch 0.8s infinite ease-in-out;
+}
+
+@keyframes pulse-touch {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(255, 109, 0, 0.4); }
+    50%       { box-shadow: 0 0 0 6px rgba(255, 109, 0, 0.15); }
+}
+
+/* Indicador de instrucción táctil (hint) */
+.touch-hint {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: var(--spacing-xs);
+    opacity: 0;
+    transition: opacity 0.3s;
+    height: 1.2em;
+}
+.touch-hint.visible {
+    opacity: 1;
+}
