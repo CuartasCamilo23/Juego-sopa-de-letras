@@ -1,4 +1,6 @@
-// Elementos del DOM
+// =============================================
+// ELEMENTOS DEL DOM
+// =============================================
 const wordSearchGrid = document.getElementById('word-search-grid');
 const wordList = document.getElementById('word-list');
 const currentLevelElement = document.getElementById('current-level');
@@ -13,19 +15,41 @@ const nextLevelModalButton = document.getElementById('next-level-modal');
 const tutorialModal = document.getElementById('tutorial-modal');
 const startGameButton = document.getElementById('start-game');
 const selectionLine = document.getElementById('selection-line');
+const touchHint = document.getElementById('touch-hint');
 
-// Variables globales
+function setTouchHint(msg) {
+    if (!touchHint) return;
+    if (msg) {
+        touchHint.textContent = msg;
+        touchHint.classList.add('visible');
+    } else {
+        touchHint.classList.remove('visible');
+    }
+}
+
+// =============================================
+// VARIABLES GLOBALES
+// =============================================
 let currentLevel = 1;
 let selectedCells = [];
 let foundWords = [];
-let gridSize = 10; // Tamaño inicial para los niveles 1-30
-let touchStarted = false;
+let gridSize = 10;
 let firstTimePlayer = true;
 
-// Estructura para almacenar la información de cada nivel
+// Estado de selección táctil: toque en primera y última letra
+let touchMode = false;       // true si estamos en modo táctil
+let firstTouchCell = null;   // primera celda tocada
+let isSelectingTouch = false; // si se está esperando segunda celda
+
+// Estado de selección por mouse (arrastre)
+let isDragging = false;
+let dragStartCell = null;
+
+// =============================================
+// DATOS DE NIVELES
+// =============================================
 const levels = [
-    // Niveles 1-30: 10x10, 6 palabras, horizontal y vertical
-    // Nivel 1 - Frutas
+    // Nivel 1 - Frutas (10x10)
     {
         theme: "Frutas",
         words: ["MANZANA", "LULO", "NARANJA", "FRESA", "PERA", "UVA"],
@@ -41,7 +65,6 @@ const levels = [
             "NARANJAQWN",
             "QWERTYUIOA"
         ],
-      
         bgClass: "level-bg-1"
     },
     // Nivel 2 - Animales
@@ -60,7 +83,6 @@ const levels = [
             "TIGREASDFT",
             "ZXCVBNMLKO"
         ],
-
         bgClass: "level-bg-2"
     },
     // Nivel 3 - Colores
@@ -79,7 +101,6 @@ const levels = [
             "QWGRISDNBL",
             "ASDFGHJKOÑ"
         ],
-     
         bgClass: "level-bg-3"
     },
     // Nivel 4 - Países
@@ -98,10 +119,9 @@ const levels = [
             "QWERTYIDIV",
             "ITALIASDQQ"
         ],
-      
         bgClass: "level-bg-4"
     },
-    // Nivel 5 - Planetas
+    // Nivel 5 - Astronomía
     {
         theme: "Astronomía",
         words: ["TIERRA", "MARTE", "VENUS", "JUPITER", "SATURNO", "URANO"],
@@ -117,650 +137,657 @@ const levels = [
             "URANOLKJHO",
             "POIUYTREWQ"
         ],
-       
         bgClass: "level-bg-5"
     },
-    // Nivel 6
+    // Nivel 6 - Deportes
     {
-    theme: "Deportes",
-    words: ["FUTBOL", "TENIS", "GOLF", "BOXEO", "SURF", "JUDO"],
-    grid: [
-        "FUTBOLQWER",
-        "AALMNCGTEN",
-        "SALUJWREEX",
-        "DALPKYANHG",
-        "FAOITFIIDO",
-        "GAQRNCSSGL",
-        "HVOLAFADLF",
-        "IWTKKSURFO",
-        "JZQBMBOXEO",
-        "JUDOXKJHGF"
-    ],
-   
-    bgClass: "level-bg-9"
-},
- // Nivel 7 - Profesiones
-{
-    theme: "Profesiones",
-    words: ["DOCTOR", "MAESTRO", "ACTOR", "BOMBERO", "PILOTO", "COCINERO"],
-    grid: [
-        "DLMDEACTOR",  // ACTOR empieza vertical en col 5
-        "OLZOACGCRR",
-        "CGMWTCVIOP",
-        "TQEISOKBMB",
-        "OBAWRRQOEO",
-        "RMCETUCMER",
-        "MAESTROBYT",
-        "UJNIBVCEZD",
-        "PILOTODRGA",
-        "COCINEROLK"
-    ],
-   
-    bgClass: "level-bg-7"
-},
-    
-// Nivel 8 - Ropa
-{
-  theme: "Ropa",
-  words: ["CAMISA", "FALDA", "ZAPATOS", "ABRIGO", "GORRA", "VESTIDO"],
-  grid: [
-    "ZAPATOSLKA",  // ZAPATOS horizontal
-    "ARUHTYUIOB",
-    "PGORRAQVER",  // GORRA vertical desde (2,1) a (6,1)
-    "OLKMNJUEOI",
-    "CAHJNKISOG",  // VESTIDO horizontal
-    "AHFALDATXO",  // FALDA horizontal
-    "MBRIGHJILO",  // ABRIGO vertical desde (6,1)
-    "IQWERTYDIO",
-    "CAMISAQOER",  // CAMISA horizontal
-    "ALKSJDHGFD"
-  ],
- 
-  bgClass: "level-bg-8"
-},
-
+        theme: "Deportes",
+        words: ["FUTBOL", "TENIS", "GOLF", "BOXEO", "SURF", "JUDO"],
+        grid: [
+            "FUTBOLQWER",
+            "AALMNCGTEN",
+            "SALUJWREEX",
+            "DALPKYANHG",
+            "FAOITFIIDO",
+            "GAQRNCSSGL",
+            "HVOLAFADLF",
+            "IWTKKSURFO",
+            "JZQBMBOXEO",
+            "JUDOXKJHGF"
+        ],
+        bgClass: "level-bg-6"
+    },
+    // Nivel 7 - Profesiones
+    {
+        theme: "Profesiones",
+        words: ["DOCTOR", "MAESTRO", "ACTOR", "BOMBERO", "PILOTO", "COCINERO"],
+        grid: [
+            "DLMDEACTOR",
+            "OLZOACGCRR",
+            "CGMWTCVIOP",
+            "TQEISOKBMB",
+            "OBAWRRQOEO",
+            "RMCETUCMER",
+            "MAESTROBYT",
+            "UJNIBVCEZD",
+            "PILOTODRGA",
+            "COCINEROLK"
+        ],
+        bgClass: "level-bg-7"
+    },
+    // Nivel 8 - Ropa
+    {
+        theme: "Ropa",
+        words: ["CAMISA", "FALDA", "ZAPATOS", "ABRIGO", "GORRA", "VESTIDO"],
+        grid: [
+            "ZAPATOSLKA",
+            "ARUHTYUIOB",
+            "PGORRAQVER",
+            "OLKMNJUEOI",
+            "CAHJNKISOG",
+            "AHFALDATXO",
+            "MBRIGHJILO",
+            "IQWERTYDIO",
+            "CAMISAQOER",
+            "ALKSJDHGFD"
+        ],
+        bgClass: "level-bg-8"
+    },
     // Nivel 9 - Instrumentos
-{
-  theme: "Instrumentos",
-  words: ["PIANO", "VIOLIN", "FLAUTA", "TAMBOR", "BAJO", "ARPA"],
-  grid: [
-    "PFLAUTAZXQ",  
-    "IAXMVNBQWE",
-    "AVZBCXMNPO",
-    "NTAMBOREWU",
-    "OBXQWTYUIO",  
-    "RLEISADFGH",
-    "BVIOLINMNB",  
-    "AASDFGHJKL", 
-    "JQWEARPAIO",  
-    "OPIULKJHGF"
-  ],
-  
-  bgClass: "level-bg-9"
-},
-
-// Nivel 10 - Muebles
-{
-  theme: "Muebles",
-  words: ["MESA", "SILLA", "SOFA", "CAMA", "ESPEJO", "LAMPARA"],
-  grid: [
-    "KVDAZXCVBN",  // MESA horizontal (col 0)
-    "APLKMNBECX",
-    "SILLARTSYU",  // SILLA horizontal (col 0)
-    "CLKAQWEPTY",  // CAMA horizontal (col 0)
-    "SOFAZXCEMN",  // SOFA horizontal (col 0)
-    "QWERTYUJOP",
-    "MXTUJCJOAS",  // ESPEJO horizontal (col 2)
-    "ELAMPARAKL",  // LAMPARA horizontal (col 1)
-    "SVBCXMEMTY",
-    "AASWEACAFR"
-  ],
- 
-  bgClass: "level-bg-10"
-},
-
-// Nivel 11 - Flores
-{
-  theme: "Flores",
-  words: ["ROSA", "DALIA", "TULIPAN", "LIRIO", "MARGARITA", "JAZMIN", "ORQUIDEA"],
-  grid: [
-    "LKDOIRILNM",    // ROSA horizontal
-    "QWAPLNIOAO",    // LIRIO horizontal
-    "PLLLBIEUFR",    // MARGARITA horizontal
-    "OKIHGMDSAQ",
-    "ZXAVBZMLRU",
-    "TULIPANQOI",    // TULIPAN horizontal
-    "AZXORJUISD",    // ORQUIDEA horizontal (col 3)
-    "POIUYTREAE",
-    "LKJHGFDSAA",
-    "MARGARITAK"     // JAZMIN horizontal
-  ],
- 
-  bgClass: "level-bg-11"
-},
-
-// Nivel 12 - Partes de la casa
-{
-  theme: "Partes de la casa",
-  words: ["COCINA", "BALCON", "BAÑO", "SALA", "JARDIN", "GARAJE", "DORMITORIO"],
-  grid: [
-    "LKEBFDQWER",     // COCINA horizontal
-    "ZXJVBASALA",     // SALA horizontal (col 6)
-    "BNAKOORFJC",     // JARDIN horizontal (col 3)
-    "DORMITORIO",     // DORMITORIO horizontal
-    "LKAHGFDSAC",
-    "ASGFGHJKLI",
-    "PÑGKJHGARN",     // GARAJE horizontal (col 6)
-    "BAÑOZXCVBA",     // BAÑO horizontal
-    "QWENIDRAJP",
-    "MNBALCONJH"
-  ],
-
-  bgClass: "level-bg-12"
-},
-
-// Nivel 13 - Medios de transporte
-{
-  theme: "Medios de transporte",
-  words: ["COCHE", "TREN", "AVION", "BARCO", "MOTO", "BICICLETA", "METRO"],
-  grid: [
-    "AVIONBUUFA",     // AVION (col 0), TREN (col 5)
-    "LZXCVMOTOT",     // MOTO (col 5)
-    "BICICLETAR",     // BICICLETA (col 0)
-    "PLKMNBVCXE",
-    "COCHEPLKMN",     // COCHE (col 0)
-    "QWERTBUIOP",
-    "LKJHGADSMZ",
-    "JGVMORWEOT",     // BARCO (col 0)
-    "METROCXCTB",     // METRO (col 0)
-    "MNBVCOZLOJ"
-  ],
-
-  bgClass: "level-bg-13"
-},
-// Nivel 14 - Comidas
-{
-  theme: "Comidas",
-  words: ["ARROZ", "PIZZA", "ENSALADA", "SOPA", "GALLETAS", "TACO", "PASTA"],
-  grid: [
-    "LOFBDUJUFO",   // HAMBURGUESA (col 0)
-    "QWERTYUIOP",
-    "ENSALADAZX",    // ENSALADA (col 0)
-    "LKJHGFASAS",
-    "TACOKHTAQO",    // TACO (col 0), SOPA (col 4)
-    "MNBVCXSLKP",
-    "SATELLAGRA",    // PASTA (col 0)
-    "ZXCVBNPASD",
-    "PIZZARROZL",    // PIZZA (col 0), ARROZ (col 5)
-    "LKJHGFDSAQ"
-  ],
-
-  bgClass: "level-bg-14"
-},
-// Nivel 15 - Escuela
-{
-  theme: "Escuela",
-  words: ["LAPIZ", "CUADERNO", "BORRADOR", "REGLA", "MOCHILA", "TIZA", "COLOR"],
-  grid: [
-    "CUADERNOBB",    // CUADERNO (col 0)
-    "OQWERTYUOO",
-    "LUISXARTRK",    // BORRADOR (col 0)
-    "PLMNBVEXRE",
-    "LAPIZSGUAA",    // LAPIZ (col 0)
-    "JUGNKQLEDT",    // REGLA (col 0)
-    "MOCHILAZOT",    // MOCHILA (col 0)
-    "YTREWQTIRI",    // TIZA (col 7)
-    "ROLOCLAPOZ",    // ESCRITORIO (col 0)
-    "LKJHGFDSAA"
-  ],
-
-  bgClass: "level-bg-15"
-},
-
-// Nivel 16 - Clima
-{
-  theme: "Clima",
-  words: ["LLUVIA", "TORMENTA", "NIEVE", "VIENTO", "SOL", "NUBES", "GRANIZO"],
-  grid: [
-    "TORMENTAZA",   // TORMENTA (fila 0, col 0 a 7)
-    "QWERTYUVIE",   // VIENTO (vertical)
-    "SEBUNSEXCV",   // NUBLADO (fila 2)
-    "QAZWSXGDCR",
-    "LLUVIARWER",   // LLUVIA (fila 4)
-    "MNBVCXAASD",
-    "NIEVELNJHG",   // NIEVE (fila 6)
-    "YTREWQIKJL",
-    "NUBAIZZQWO",   // GRANIZO (fila 8)
-    "ZVIENTOFLS"    // SOL (fila 9, col 6 a 8)
-  ],
- 
-  bgClass: "level-bg-16"
-},
-
-// Nivel 17 - Cuentos de Hadas
-{
-  theme: "Cuentos de Hadas",
-  words: ["HADA", "DRAGON", "PRINCIPE", "HECHIZO", "CASTILLO", "MAGIA", "BRUJA"],
-  grid: [
-    "HUJKOLQDER",   // DRAGON (fila 0, horizontal)
-    "MAGIAOLRJU",   // MAGIA (fila 1)
-    "QWERTYHADA",   // HADA (fila 2, col 6 a 9)
-    "ZXCASDFGHJ",
-    "CASTILLONB",   // CASTILLO (fila 4)
-    "YAIOPBRNJA",   // BRUJA (fila 5, col 5 a 9)
-    "LJJHECHIZO",   // HECHIZO (fila 6, col 3 a 9)
-    "MUPRINCIPE",   // PRINCIPE (fila 7, col 2 a 9)
-    "ARDOZIHCEH",
-    "PBIUYTREWA"
-  ],
- 
-  bgClass: "level-bg-17"
-},
-// Nivel 18 - Ciencias
-{
-    theme: "Ciencia",
-    words: ["QUIMICA", "FISICA", "BIOLOGIA", "ATOMO", "CELULA", "GEN", "ENERGIA"],
-    grid: [
-        "ACIMIUQZRX",
-        "XWXYLJXAXB",
-        "FISICAKCAI",
-        "XPZOBOLOIO",
-        "CELULAHHGL",
-        "ZBCNLTAORO",
-        "YQAEXOLNEG",
-        "LODGSMBFNI",
-        "AFTEROYUEA",
-        "YHLQMDLGKK"
-    ],
-   
-    bgClass: "level-bg-18"
-},
-// Nivel 19 - Cine
-{
-    theme: "Cine",
-    words: ["PELICULA", "DIRECTOR", "ACTOR", "ESCENA", "CAMARA", "GUION", "CINE"],
-    grid: [
-        "LOCAMARAOP",
-        "QWELDHJKLA",
-        "ZXCUIUIONB",
-        "YUICRACLON",
-        "HJKIEXZFDO",
-        "ECCLCACWEI",
-        "OPCETRITYU",
-        "CVBPOLNJHG",
-        "ACTORNEASD",
-        "TGBDANECSE"
-    ],
-   
-    bgClass: "level-bg-19"
-},
-// Nivel 20 - Mitología
-{
-    theme: "Dioses Griegos",
-    words: ["ZEUS", "HADES", "HERA", "POSEIDON", "ATENEA", "AFRODITA", "APOLO"],
-    grid: [
-        "ZSATIDORFA",
-        "EESATGHJKL",
-        "UDDFGHODAN",
-        "SAEITAMNTO",
-        "BHCVBNMZED",
-        "NHATENEANI",
-        "POLOPARSLE",
-        "LKJHGFDSAS",
-        "AKJOUHERTO",
-        "MAREHZXCVP"
-    ],
-   
-    bgClass: "level-bg-20"
-},
-// Nivel 21 - La Ciudad
-{
-    theme: "La Ciudad",
-    words: ["CALLE", "BANCO", "EDIFICIO", "PARQUE", "PLAZA", "MERCADO", "PUENTE"],
-    grid: [
-        "PAQUAQWERP",
-        "LZXCVBNUOE",
-        "AAOCNABTIU",
-        "CSEMEFARCO",
-        "LOIFLCNOIQ",
-        "AYUILPCKFA",
-        "MERCADOBIZ",
-        "BVCXCLKJDA",
-        "UYEUQRAPEL",
-        "PUENTEJKLP"
-    ],
-   
-    bgClass: "level-bg-21"
-},
-// Nivel 22 - Herramientas
-{
-    theme: "Herramientas",
-    words: ["MARTILLO", "LIMA", "SIERRA", "LLAVE", "TALADRO", "CLAVO", "TIJERAS"],
-    grid: [
-        "QWETALADRO",
-        "ZXCIAVMLIK",
-        "OVALCEALYU",
-        "SSTIJERASU",
-        "ILAVEXTVBN",
-        "EGFDSAIEER",
-        "RODKFJLJPO",
-        "RBVCXZLKJH",
-        "AIAMILOERS",
-        "MIDLZXCVBN"
-    ],
-   
-    bgClass: "level-bg-22"
-},
-// Nivel 23 - Cuerpo Humano
-{
-    theme: "Cuerpo Humano",
-    words: ["CABEZA", "PECHO", "PIERNA", "MANO", "OJO", "OREJA", "BRAZO"],
-    grid: [
-        "XZCLODGDFK",
-        "QWEMRNOUDI",
-        "ASDPECHOSB",
-        "JAZWJXEDSC",
-        "OIDCAGVFAA",
-        "LKJOAFDSNB",
-        "TYUJOLODRE",
-        "MANOLÑMNEZ",
-        "MNOJJXZQIA",
-        "AOZARBDLPI"
-    ],
- 
-    bgClass: "level-bg-23"
-},
-// Nivel 24 - Piratas
- {
-    theme: "Piratas",
-    words: ["BARCO", "TESORO", "MAPA", "ESPADA", "ISLA", "BRUJULA", "CAPITAN"],
-    grid: [
-        "BMAPAMKLIO",
-        "AWECAPITAN",
-        "ROROSETNOB",
-        "CJKIOSAQWR",
-        "OSLAVPRGTU",
-        "ZXCVBAUJUJ",
-        "QAZWSDEDCU",
-        "POISLAREWL",
-        "LKJHGFDSAA",
-        "MNBCXZQWER"
-    ],
-  
-    bgClass: "level-bg-24"
-},
-// Nivel 25 - Videojuegos
-{
-    theme: "Videojuegos",
-    words: ["MARIO", "ZELDA", "SONIC", "FORTNITE", "PACMAN", "TETRIS", "MINECRAFT"],
-    grid: [
-        "OIRAMPLKJH",
-        "QETINTROFN",
-        "ASDFNJSHAU",
-        "ZXCVBNSQWE",
-        "PLKEANITYA",
-        "CNJKOURITD",
-        "IONILGTJKL",
-        "NAMCAPEDFE",
-        "OOIUYTTEWZ",
-        "STFARCENIM"
-    ],
-    
-    bgClass: "level-bg-25"
-},
-// Nivel 26 - Medicina
-{
-    theme: "Medicina",
-    words: ["DOCTOR", "ENFERMERA", "HOSPITAL", "VACUNA", "JERINGA", "PASTILLA", "CURA"],
-    grid: [
-        "DOCTORQWEA",
-        "LPASTILLAE",
-        "OAGNIREJDN",
-        "SDFGRTILLF",
-        "HOSPITALYE",
-        "JERINGÑBNR",
-        "ZXCVBNMLKM",
-        "QANUCAVIOE",
-        "ASDFGHJKLR",
-        "CURAZXCVBA"
-    ],
-  
-    bgClass: "level-bg-26"
-},
-// Nivel 27 - Tecnología
-{
-    theme: "Tecnología",
-    words: ["COMPUTADOR", "INTERNET", "ROBOT", "SOFTWARE", "HARDWARE", "CABLE", "RED"],
-    grid: [
-        "IAMAFLYKIT",
-        "AQWERTYUIE",
-        "DHARDWAREN",
-        "COMPUTADOR",
-        "ZXCVBNMLKE",
-        "QWSOGEERYT",
-        "RTYUIOPADN",
-        "FCABLENMEI",
-        "GHJKTOBORT",
-        "ZRERAWTFOS"
-    ],
- 
-    bgClass: "level-bg-27"
-},
-// Nivel 28 - Mitología Nórdica
-{
-    theme: "Mitología Nórdica",
-    words: ["ODIN", "THOR", "LOKI", "VALHALLA", "RAGNAROK", "FREYA", "ASGARD"],
-    grid: [
-        "TNUYTFDRAS",
-        "QROHTYUIOP",
-        "VALHALLAUI",
-        "ASDFGHJSLÑ",
-        "ZXCVBNMGSD",
-        "LIDFGTGAJA",
-        "KORANGARMY",
-        "QAZWSXEDCE",
-        "ODINPLKJHR",
-        "MNLOKIZQWF"
-    ],
-  
-    bgClass: "level-bg-28"
-},
-// Nivel 29 - Inventos
-{
-    theme: "Inventos",
-    words: ["TELEFONO", "AVION", "IMPRENTA", "BOMBILLA", "RADIO", "TELEVISION", "RUEDA"],
-    grid: [
-        "RJSUASGSAT",
-        "AWERTYUIOE",
-        "DSOIDARKLL",
-        "ISKAHJSJRE",
-        "ALLIBMOBFF",
-        "IMPRENTAHO",
-        "QAZWSXEDCN",
-        "RUEDADARGO",
-        "PLMNONOIVA",
-        "TELEVISION"
-    ],
-   
-    bgClass: "level-bg-29"
-},
-// Nivel 30 - Océanos
-{
-    theme: "Océanos",
-    words: ["PACIFICO", "SALADO", "INDICO", "ARTICO", "ANTARTICO", "CORAL", "OLAS"],
-    grid: [
-        "PAPOIREIXA",
-        "AOERTYUIOR",
-        "CCDARTICOT",
-        "IICOBNMNBI",
-        "FTTCRTICOC",
-        "IRJIGFDSAO",
-        "CAODALASSN",
-        "OTJNLCORAL",
-        "QNZISWEDLV",
-        "IAGERYYWOR"
-    ],
-  
-    bgClass: "level-bg-30"
-},
-// Nivel 31 - Desastres Naturales
-{
-    theme: "Desastres Naturales",
-    words: ["TERREMOTO", "TSUNAMI", "HURACAN", "TORNADO", "ERUPCION", "INUNDACION", "SEQUIA", "AVALANCHA", "INCENDIO"],
-    grid: [
-        "DTEAOSEQUIAS",
-        "QEERTYUIOPLA",
-        "ARDFGHJKDÑNX",
-        "ZRCUARNDACON",
-        "VENMASDFNHIO",
-        "QMMSEQURRYCI",
-        "POKJHGFDOAAC",
-        "MTSUNAMITODP",
-        "IOYTREWQASNU",
-        "OPINCENDIOUR",
-        "AHCNALAVAQNE",
-        "HURACANMNBIC"
-    ],
-    bgClass: "level-bg-31"
-},
-// Nivel 32 - Energías Renovables
-{
-    theme: "Energías Renovables",
-    words: ["SOLAR", "EOLICA", "HIDRICA", "GEOTERMICA", "BIOMASA", "MARINA", "NUCLEAR", "RENOVABLE", "SALUD"],
-    grid: [
-        "ELBAVONERDIR",
-        "QMARINALAVTA",
-        "ASDHIDRICAUL",
-        "ZXCGSALUDRMO",
-        "ASAMOIBAOLKS",
-        "TYURENLVABLC",
-        "FGHMARONADFA",
-        "QAZWSOSPROWC",
-        "EOLICATGBHYU",
-        "NUCLEAROPADD",
-        "QWERTYUIOPLK",
-        "GACIMRETOEGG"
-    ],
-    bgClass: "level-bg-32"
-},
-// Nivel 33 - Civilizaciones Antiguas
-{
-    theme: "Civilizaciones Antiguas",
-    words: ["EGIPCIA", "ROMANA", "GRIEGA", "MAYA", "AZTECA", "CHINA", "INCA", "MESOPOTAMIA", "VIKINGA"],
-    grid: [
-        "EGIPCIAROAAN",
-        "QWERTYYIONAF",
-        "SDFGHJALÑAFX",
-        "CHINAMMEYMQV",
-        "APTERACHIOAA",
-        "ZXCVBNMIARAG",
-        "MESOPOTAMIAN",
-        "LKJHGFDZAZXI",
-        "QAZWSXETCRFK",
-        "TGBYHNUEMIKI",
-        "AGEIRGUCSFYV",
-        "LDSLUHIACNIV"
-    ],
-    bgClass: "level-bg-33"
-},
-// Nivel 34 - Monumentos Famosos
-{
-    theme: "Monumentos Famosos",
-    words: ["TORRE", "COLISEO", "TAJ", "MURALLA", "BIGBEN", "PIRAMIDE", "CRISTO", "PETRA", "PARTENON"],
-    grid: [
-        "TASDFWQERTYU",
-        "QWECOLISEOIP",
-        "ASDGSDOLOJHG",
-        "ZXCMURALEABN",
-        "BIGBENQWSRTY",
-        "POEDIMARIPEU",
-        "LKJHGTDSLCRT",
-        "PETRAAXCOBNE",
-        "QAZWSJEDCRFR",
-        "TGBPARTENONR",
-        "PLMALLARUMAO",
-        "BVCRISTOQWET"
-    ],
-    bgClass: "level-bg-34"
-},
-// Nivel 35 - Tipos de Árboles
-{
-    theme: "Tipos de Árboles",
-    words: ["ROBLE", "PINO", "CEDRO", "ABETO", "SAUCE", "OLIVO", "PALMA", "EUCALIPTO", "CIPRES"],
-    grid: [
-        "QWERYAMLAPOD",
-        "SDFGHJALÑZVD",
-        "EXCVBNBASDIF",
-        "UCEDROEDCRLJ",
-        "COGBYHTUJMOT",
-        "ANLPÑQOERTYB",
-        "LIOPASDFGHJE",
-        "IPZXCVBNMQAL",
-        "PSXEDCRFVTGB",
-        "TCIPRESIKOLO",
-        "OÑROBLOXDIOR",
-        "PAECUASEKLZW"
-    ],
-    bgClass: "level-bg-35"
-},
-// Nivel 36 - Minerales y Piedras Preciosas
-{
-    theme: "Minerales y Piedras Preciosas",
-    words: ["DIAMANTE", "ESMERALDA", "ZAFIRO", "RUBI", "AMATISTA", "CUARZO", "TOPACIO", "ORO", "TURMALINA"],
-    grid: [
-        "QWEATSITAMAF",
-        "SDFGHJKLÑZXA",
-        "ZXKUARDNSDFD",
-        "QAZWSOZRAUCL",
-        "VOICAPOTJMIA",
-        "IOLPÑQWERTYR",
-        "BIOPASDFGHJE",
-        "UETNAMAIDAAM",
-        "RSXEORIFAZGS",
-        "BYHNUJMIKOLE",
-        "TURMALINAKDA",
-        "POROFGHJKLZY"
-    ],
-    bgClass: "level-bg-36"
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // Continuarían los niveles 6 al 100...
-    // Los primeros 30 niveles: 10x10, 6 palabras
-    // Del nivel 31 al 70: 12x12, 9 palabras
-    // Del nivel 71 al 100: 15x15, 12 palabras
+    {
+        theme: "Instrumentos",
+        words: ["PIANO", "VIOLIN", "FLAUTA", "TAMBOR", "BAJO", "ARPA"],
+        grid: [
+            "PFLAUTAZXQ",
+            "IAXMVNBQWE",
+            "AVZBCXMNPO",
+            "NTAMBOREWU",
+            "OBXQWTYUIO",
+            "RLEISADFGH",
+            "BVIOLINMNB",
+            "AASDFGHJKL",
+            "JQWEARPAIO",
+            "OPIULKJHGF"
+        ],
+        bgClass: "level-bg-9"
+    },
+    // Nivel 10 - Muebles
+    {
+        theme: "Muebles",
+        words: ["MESA", "SILLA", "SOFA", "CAMA", "ESPEJO", "LAMPARA"],
+        grid: [
+            "KVDAZXCVBN",
+            "APLKMNBECX",
+            "SILLARTSYU",
+            "CLKAQWEPTY",
+            "SOFAZXCEMN",
+            "QWERTYUJOP",
+            "MXTUJCJOAS",
+            "ELAMPARAKL",
+            "SVBCXMEMTY",
+            "AASWEACAFR"
+        ],
+        bgClass: "level-bg-10"
+    },
+    // Nivel 11 - Flores
+    {
+        theme: "Flores",
+        words: ["ROSA", "DALIA", "TULIPAN", "LIRIO", "JAZMIN", "ORQUIDEA"],
+        grid: [
+            "LKDOIRILNM",
+            "QWAPLNIOAO",
+            "PLLLBIEUFR",
+            "OKIHGMDSAQ",
+            "ZXAVBZMLRU",
+            "TULIPANQOI",
+            "AZXORJUISD",
+            "POIUYTREAE",
+            "LKJHGFDSAA",
+            "JAZMINQWEK"
+        ],
+        bgClass: "level-bg-11"
+    },
+    // Nivel 12 - Partes de la casa
+    {
+        theme: "Partes de la casa",
+        words: ["COCINA", "BALCON", "BAÑO", "SALA", "JARDIN", "GARAJE", "DORMITORIO"],
+        grid: [
+            "LKEBFDQWER",
+            "ZXJVBASALA",
+            "BNAKOORFJC",
+            "DORMITORIO",
+            "LKAHGFDSAC",
+            "ASGFGHJKLI",
+            "PÑGKJHGARN",
+            "BAÑOZXCVBA",
+            "QWENIDRAJP",
+            "MNBALCONJH"
+        ],
+        bgClass: "level-bg-12"
+    },
+    // Nivel 13 - Medios de transporte
+    {
+        theme: "Medios de transporte",
+        words: ["COCHE", "TREN", "AVION", "BARCO", "MOTO", "BICICLETA", "METRO"],
+        grid: [
+            "AVIONBUUFA",
+            "LZXCVMOTOT",
+            "BICICLETAR",
+            "PLKMNBVCXE",
+            "COCHEPLKMN",
+            "QWERTBUIOP",
+            "LKJHGADSMZ",
+            "JGVMORWEOT",
+            "METROCXCTB",
+            "MNBVCOZLOJ"
+        ],
+        bgClass: "level-bg-13"
+    },
+    // Nivel 14 - Comidas
+    {
+        theme: "Comidas",
+        words: ["ARROZ", "PIZZA", "ENSALADA", "SOPA", "GALLETAS", "TACO", "PASTA"],
+        grid: [
+            "LOFBDUJUFO",
+            "QWERTYUIOP",
+            "ENSALADAZX",
+            "LKJHGFASAS",
+            "TACOKHTAQO",
+            "MNBVCXSLKP",
+            "SATELLAGRA",
+            "ZXCVBNPASD",
+            "PIZZARROZL",
+            "LKJHGFDSAQ"
+        ],
+        bgClass: "level-bg-14"
+    },
+    // Nivel 15 - Escuela
+    {
+        theme: "Escuela",
+        words: ["LAPIZ", "CUADERNO", "BORRADOR", "REGLA", "MOCHILA", "TIZA", "COLOR"],
+        grid: [
+            "CUADERNOBB",
+            "OQWERTYUOO",
+            "LUISXARTRK",
+            "PLMNBVEXRE",
+            "LAPIZSGUAA",
+            "JUGNKQLEDT",
+            "MOCHILAZOT",
+            "YTREWQTIRI",
+            "ROLOCLAPOZ",
+            "LKJHGFDSAA"
+        ],
+        bgClass: "level-bg-15"
+    },
+    // Nivel 16 - Clima
+    {
+        theme: "Clima",
+        words: ["LLUVIA", "TORMENTA", "NIEVE", "VIENTO", "SOL", "NUBES", "GRANIZO"],
+        grid: [
+            "TORMENTAZA",
+            "QWERTYUVIE",
+            "SEBUNSEXCV",
+            "QAZWSXGDCR",
+            "LLUVIARWER",
+            "MNBVCXAASD",
+            "NIEVELNJHG",
+            "YTREWQIKJL",
+            "NUBAIZZQWO",
+            "ZVIENTOFLS"
+        ],
+        bgClass: "level-bg-16"
+    },
+    // Nivel 17 - Cuentos de Hadas
+    {
+        theme: "Cuentos de Hadas",
+        words: ["HADA", "DRAGON", "PRINCIPE", "HECHIZO", "CASTILLO", "MAGIA", "BRUJA"],
+        grid: [
+            "HUJKOLQDER",
+            "MAGIAOLRJU",
+            "QWERTYHADA",
+            "ZXCASDFGHJ",
+            "CASTILLONB",
+            "YAIOPBRNJA",
+            "LJJHECHIZO",
+            "MUPRINCIPE",
+            "ARDOZIHCEH",
+            "PBIUYTREWA"
+        ],
+        bgClass: "level-bg-17"
+    },
+    // Nivel 18 - Ciencias
+    {
+        theme: "Ciencia",
+        words: ["QUIMICA", "FISICA", "BIOLOGIA", "ATOMO", "CELULA", "GEN", "ENERGIA"],
+        grid: [
+            "ACIMIUQZRX",
+            "XWXYLJXAXB",
+            "FISICAKCAI",
+            "XPZOBOLOIO",
+            "CELULAHHGL",
+            "ZBCNLTAORO",
+            "YQAEXOLNEG",
+            "LODGSMBFNI",
+            "AFTEROYUEA",
+            "YHLQMDLGKK"
+        ],
+        bgClass: "level-bg-18"
+    },
+    // Nivel 19 - Cine
+    {
+        theme: "Cine",
+        words: ["PELICULA", "DIRECTOR", "ACTOR", "ESCENA", "CAMARA", "GUION", "CINE"],
+        grid: [
+            "LOCAMARAOP",
+            "QWELDHJKLA",
+            "ZXCUIUIONB",
+            "YUICRACLON",
+            "HJKIEXZFDO",
+            "ECCLCACWEI",
+            "OPCETRITYU",
+            "CVBPOLNJHG",
+            "ACTORNEASD",
+            "TGBDANECSE"
+        ],
+        bgClass: "level-bg-19"
+    },
+    // Nivel 20 - Mitología Griega
+    {
+        theme: "Dioses Griegos",
+        words: ["ZEUS", "HADES", "HERA", "POSEIDON", "ATENEA", "AFRODITA", "APOLO"],
+        grid: [
+            "ZSATIDORFA",
+            "EESATGHJKL",
+            "UDDFGHODAN",
+            "SAEITAMNTO",
+            "BHCVBNMZED",
+            "NHATENEANI",
+            "POLOPARSLE",
+            "LKJHGFDSAS",
+            "AKJOUHERTO",
+            "MAREHZXCVP"
+        ],
+        bgClass: "level-bg-20"
+    },
+    // Nivel 21 - La Ciudad
+    {
+        theme: "La Ciudad",
+        words: ["CALLE", "BANCO", "EDIFICIO", "PARQUE", "PLAZA", "MERCADO", "PUENTE"],
+        grid: [
+            "PAQUAQWERP",
+            "LZXCVBNUOE",
+            "AAOCNABTIU",
+            "CSEMEFARCO",
+            "LOIFLCNOIQ",
+            "AYUILPCKFA",
+            "MERCADOBIZ",
+            "BVCXCLKJDA",
+            "UYEUQRAPEL",
+            "PUENTEJKLP"
+        ],
+        bgClass: "level-bg-21"
+    },
+    // Nivel 22 - Herramientas
+    {
+        theme: "Herramientas",
+        words: ["MARTILLO", "LIMA", "SIERRA", "LLAVE", "TALADRO", "CLAVO", "TIJERAS"],
+        grid: [
+            "QWETALADRO",
+            "ZXCIAVMLIK",
+            "OVALCEALYU",
+            "SSTIJERASU",
+            "ILAVEXTVBN",
+            "EGFDSAIEER",
+            "RODKFJLJPO",
+            "RBVCXZLKJH",
+            "AIAMILOERS",
+            "MIDLZXCVBN"
+        ],
+        bgClass: "level-bg-22"
+    },
+    // Nivel 23 - Cuerpo Humano
+    {
+        theme: "Cuerpo Humano",
+        words: ["CABEZA", "PECHO", "PIERNA", "MANO", "OJO", "OREJA", "BRAZO"],
+        grid: [
+            "XZCLODGDFK",
+            "QWEMRNOUDI",
+            "ASDPECHOSB",
+            "JAZWJXEDSC",
+            "OIDCAGVFAA",
+            "LKJOAFDSNB",
+            "TYUJOLODRE",
+            "MANOLÑMNEZ",
+            "MNOJJXZQIA",
+            "AOZARBDLPI"
+        ],
+        bgClass: "level-bg-23"
+    },
+    // Nivel 24 - Piratas
+    {
+        theme: "Piratas",
+        words: ["BARCO", "TESORO", "MAPA", "ESPADA", "ISLA", "BRUJULA", "CAPITAN"],
+        grid: [
+            "BMAPAMKLIO",
+            "AWECAPITAN",
+            "ROROSETNOB",
+            "CJKIOSAQWR",
+            "OSLAVPRGTU",
+            "ZXCVBAUJUJ",
+            "QAZWSDEDCU",
+            "POISLAREWL",
+            "LKJHGFDSAA",
+            "MNBCXZQWER"
+        ],
+        bgClass: "level-bg-24"
+    },
+    // Nivel 25 - Videojuegos
+    {
+        theme: "Videojuegos",
+        words: ["MARIO", "ZELDA", "SONIC", "FORTNITE", "PACMAN", "TETRIS", "MINECRAFT"],
+        grid: [
+            "OIRAMPLKJH",
+            "QETINTROFN",
+            "ASDFNJSHAU",
+            "ZXCVBNSQWE",
+            "PLKEANITYA",
+            "CNJKOURITD",
+            "IONILGTJKL",
+            "NAMCAPEDFE",
+            "OOIUYTTEWZ",
+            "STFARCENIM"
+        ],
+        bgClass: "level-bg-25"
+    },
+    // Nivel 26 - Medicina
+    {
+        theme: "Medicina",
+        words: ["DOCTOR", "ENFERMERA", "HOSPITAL", "VACUNA", "JERINGA", "PASTILLA", "CURA"],
+        grid: [
+            "DOCTORQWEA",
+            "LPASTILLAE",
+            "OAGNIREJDN",
+            "SDFGRTILLF",
+            "HOSPITALYE",
+            "JERINGÑBNR",
+            "ZXCVBNMLKM",
+            "QANUCAVIOE",
+            "ASDFGHJKLR",
+            "CURAZXCVBA"
+        ],
+        bgClass: "level-bg-26"
+    },
+    // Nivel 27 - Tecnología
+    {
+        theme: "Tecnología",
+        words: ["COMPUTADOR", "INTERNET", "ROBOT", "SOFTWARE", "HARDWARE", "CABLE", "RED"],
+        grid: [
+            "IAMAFLYKIT",
+            "AQWERTYUIE",
+            "DHARDWAREN",
+            "COMPUTADOR",
+            "ZXCVBNMLKE",
+            "QWSOGEERYT",
+            "RTYUIOPADN",
+            "FCABLENMEI",
+            "GHJKTOBORT",
+            "ZRERAWTFOS"
+        ],
+        bgClass: "level-bg-27"
+    },
+    // Nivel 28 - Mitología Nórdica
+    {
+        theme: "Mitología Nórdica",
+        words: ["ODIN", "THOR", "LOKI", "VALHALLA", "RAGNAROK", "FREYA", "ASGARD"],
+        grid: [
+            "TNUYTFDRAS",
+            "QROHTYUIOP",
+            "VALHALLAUI",
+            "ASDFGHJSLÑ",
+            "ZXCVBNMGSD",
+            "LIDFGTGAJA",
+            "KORANGARMY",
+            "QAZWSXEDCE",
+            "ODINPLKJHR",
+            "MNLOKIZQWF"
+        ],
+        bgClass: "level-bg-28"
+    },
+    // Nivel 29 - Inventos
+    {
+        theme: "Inventos",
+        words: ["TELEFONO", "AVION", "IMPRENTA", "BOMBILLA", "RADIO", "TELEVISION", "RUEDA"],
+        grid: [
+            "RJSUASGSAT",
+            "AWERTYUIOE",
+            "DSOIDARKLL",
+            "ISKAHJSJRE",
+            "ALLIBMOBFF",
+            "IMPRENTAHO",
+            "QAZWSXEDCN",
+            "RUEDADARGO",
+            "PLMNONOIVA",
+            "TELEVISION"
+        ],
+        bgClass: "level-bg-29"
+    },
+    // Nivel 30 - Océanos
+    {
+        theme: "Océanos",
+        words: ["PACIFICO", "SALADO", "INDICO", "ARTICO", "ANTARTICO", "CORAL", "OLAS"],
+        grid: [
+            "PAPOIREIXA",
+            "AOERTYUIOR",
+            "CCDARTICOT",
+            "IICOBNMNBI",
+            "FTTCRTICOC",
+            "IRJIGFDSAO",
+            "CAODALASSN",
+            "OTJNLCORAL",
+            "QNZISWEDLV",
+            "IAGERYYWOR"
+        ],
+        bgClass: "level-bg-30"
+    },
+    // Nivel 31 - Desastres Naturales (12x12)
+    {
+        theme: "Desastres Naturales",
+        words: ["TERREMOTO", "TSUNAMI", "HURACAN", "TORNADO", "ERUPCION", "INUNDACION", "SEQUIA", "AVALANCHA", "INCENDIO"],
+        grid: [
+            "DTEAOSEQUIAS",
+            "QEERTYUIOPLA",
+            "ARDFGHJKDÑLX",
+            "ZRCUARNDACON",
+            "VENMASDFNHIO",
+            "QMMSEQURRYCI",
+            "POKJHGFDOAAC",
+            "MTSUNAMITODP",
+            "IOYTREWQASNU",
+            "OPINCENDIOUR",
+            "AHCNALAVAQNE",
+            "HURACANMNBIC"
+        ],
+        bgClass: "level-bg-31"
+    },
+    // Nivel 32 - Energías Renovables
+    {
+        theme: "Energías Renovables",
+        words: ["SOLAR", "EOLICA", "HIDRICA", "GEOTERMICA", "BIOMASA", "MARINA", "NUCLEAR", "RENOVABLE", "SALUD"],
+        grid: [
+            "ELBAVONERDIR",
+            "QMARINALAVTA",
+            "ASDHIDRICAUL",
+            "ZXCGSALUDRMO",
+            "ASAMOIBAOLKS",
+            "TYURENLVABLC",
+            "FGHMARONADFA",
+            "QAZWSOSPROWC",
+            "EOLICATGBHYU",
+            "NUCLEAROPADD",
+            "QWERTYUIOPLK",
+            "GACIMRETOEGG"
+        ],
+        bgClass: "level-bg-32"
+    },
+    // Nivel 33 - Civilizaciones Antiguas
+    {
+        theme: "Civilizaciones Antiguas",
+        words: ["EGIPCIA", "ROMANA", "GRIEGA", "MAYA", "AZTECA", "CHINA", "INCA", "MESOPOTAMIA", "VIKINGA"],
+        grid: [
+            "EGIPCIAROAAN",
+            "QWERTYYIONAF",
+            "SDFGHJALÑAFX",
+            "CHINAMMEYMQV",
+            "APTERACHIOAA",
+            "ZXCVBNMIARAG",
+            "MESOPOTAMIAN",
+            "LKJHGFDZAZXI",
+            "QAZWSXETCRFK",
+            "TGBYHNUEMIKI",
+            "AGEIRGUCSFYV",
+            "LDSLUHIACNIV"
+        ],
+        bgClass: "level-bg-33"
+    },
+    // Nivel 34 - Monumentos Famosos
+    {
+        theme: "Monumentos Famosos",
+        words: ["TORRE", "COLISEO", "TAJ", "MURALLA", "BIGBEN", "PIRAMIDE", "CRISTO", "PETRA", "PARTENON"],
+        grid: [
+            "TASDFWQERTYU",
+            "QWECOLISEOIP",
+            "ASDGSDOLOJHG",
+            "ZXCMURALEABN",
+            "BIGBENQWSRTY",
+            "POEDIMARIPEU",
+            "LKJHGTDSLCRT",
+            "PETRAAXCOBNE",
+            "QAZWSJEDCRFR",
+            "TGBPARTENONR",
+            "PLMALLARUMAO",
+            "BVCRISTOQWET"
+        ],
+        bgClass: "level-bg-34"
+    },
+    // Nivel 35 - Tipos de Árboles
+    {
+        theme: "Tipos de Árboles",
+        words: ["ROBLE", "PINO", "CEDRO", "ABETO", "SAUCE", "OLIVO", "PALMA", "EUCALIPTO", "CIPRES"],
+        grid: [
+            "QWERYAMLAPOD",
+            "SDFGHJALÑZVD",
+            "EXCVBNBASDIF",
+            "UCEDROEDCRLJ",
+            "COGBYHTUJMOT",
+            "ANLPÑQOERTYB",
+            "LIOPASDFGHJE",
+            "IPZXCVBNMQAL",
+            "PSXEDCRFVTGB",
+            "TCIPRESIKOLO",
+            "OÑROBLOXDIOR",
+            "PAECUASEKLZW"
+        ],
+        bgClass: "level-bg-35"
+    },
+    // Nivel 36 - Minerales y Piedras Preciosas
+    {
+        theme: "Minerales y Piedras Preciosas",
+        words: ["DIAMANTE", "ESMERALDA", "ZAFIRO", "RUBI", "AMATISTA", "CUARZO", "TOPACIO", "ORO", "TURMALINA"],
+        grid: [
+            "QWEATSITAMAF",
+            "SDFGHJKLÑZXA",
+            "ZXKUARDNSDFD",
+            "QAZWSOZRAUCL",
+            "VOICAPOTJMIA",
+            "IOLPÑQWERTYR",
+            "BIOPASDFGHJE",
+            "UETNAMAIDAAM",
+            "RSXEORIFAZGS",
+            "BYHNUJMIKOLE",
+            "TURMALINAKDA",
+            "POROFGHJKLZY"
+        ],
+        bgClass: "level-bg-36"
+    }
 ];
 
-// Funciones para manejar el juego
+// =============================================
+// FUNCIONES DE DIRECCIÓN (FUERA DE generateLevel)
+// =============================================
+
+/**
+ * Calcula la dirección entre dos celdas (fila/col).
+ * Devuelve {dr, dc} o null si no es una línea válida.
+ */
+function calculateDirection(startRow, startCol, endRow, endCol) {
+    const dr = endRow - startRow;
+    const dc = endCol - startCol;
+
+    if (dr === 0 && dc === 0) return null;
+
+    // Horizontal
+    if (dr === 0) return { dr: 0, dc: dc > 0 ? 1 : -1 };
+    // Vertical
+    if (dc === 0) return { dr: dr > 0 ? 1 : -1, dc: 0 };
+    // Diagonal (solo si ratio es ~1:1)
+    if (Math.abs(dr) === Math.abs(dc)) {
+        return { dr: dr > 0 ? 1 : -1, dc: dc > 0 ? 1 : -1 };
+    }
+
+    return null; // No es una línea válida
+}
+
+/**
+ * Devuelve el array de elementos DOM de celda entre start y end en la dirección dada.
+ */
+function getCellsInLine(startRow, startCol, direction, steps) {
+    const cells = [];
+    for (let i = 0; i <= steps; i++) {
+        const row = startRow + i * direction.dr;
+        const col = startCol + i * direction.dc;
+        const cell = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+        if (cell) cells.push(cell);
+    }
+    return cells;
+}
+
+/**
+ * Devuelve las celdas entre dos puntos de la cuadrícula, si forman una línea válida.
+ */
+function getCellsBetween(startCell, endCell) {
+    const startRow = parseInt(startCell.dataset.row);
+    const startCol = parseInt(startCell.dataset.col);
+    const endRow = parseInt(endCell.dataset.row);
+    const endCol = parseInt(endCell.dataset.col);
+
+    const direction = calculateDirection(startRow, startCol, endRow, endCol);
+    if (!direction) return [];
+
+    const steps = Math.max(Math.abs(endRow - startRow), Math.abs(endCol - startCol));
+    return getCellsInLine(startRow, startCol, direction, steps);
+}
+
+// =============================================
+// INICIALIZACIÓN
+// =============================================
+
 function initGame() {
     loadLevel(currentLevel);
     setupEventListeners();
-    
-    // Mostrar tutorial la primera vez
+
     if (firstTimePlayer) {
-        setTimeout(() => {
-            showTutorial();
-        }, 500);
+        setTimeout(showTutorial, 500);
     }
 }
 
 function loadLevel(levelIndex) {
-    // Restablecer el estado
     selectedCells = [];
     foundWords = [];
-    
-    // Ajustar tamaño de la cuadrícula según el nivel
+    firstTouchCell = null;
+    isSelectingTouch = false;
+    isDragging = false;
+    dragStartCell = null;
+
     if (levelIndex <= 30) {
         gridSize = 10;
     } else if (levelIndex <= 70) {
@@ -768,53 +795,48 @@ function loadLevel(levelIndex) {
     } else {
         gridSize = 15;
     }
-    
-    // Si no tenemos este nivel en nuestra estructura, creamos uno automáticamente
-    // (Para este ejemplo, solo tenemos los primeros 5 niveles definidos)
-    const level = levelIndex <= levels.length ? levels[levelIndex - 1] : generateLevel(levelIndex);
-    
-    // Actualizar información del nivel
+
+    const level = levelIndex <= levels.length
+        ? levels[levelIndex - 1]
+        : generateLevel(levelIndex);
+
     currentLevelElement.textContent = levelIndex;
     completedLevelElement.textContent = levelIndex;
-    document.body.className = level.bgClass || `level-bg-${(levelIndex % 20) + 1}`;
-    
-    // Mostrar el tema
+    document.body.className = level.bgClass || `level-bg-${(levelIndex % 100) + 1}`;
     levelThemeElement.textContent = level.theme;
-    
-    // Generar la cuadrícula
+
     createGrid(level);
-    
-    // Mostrar la lista de palabras
     displayWordList(level.words);
-    
-    // Actualizar barra de progreso
     updateProgressBar(0);
-    
-    // Actualizar estado de los botones
+
     prevLevelButton.disabled = levelIndex === 1;
     nextLevelButton.disabled = levelIndex === 100;
+
+    // Limpiar línea de selección
+    selectionLine.style.opacity = '0';
 }
+
+// =============================================
+// CUADRÍCULA
+// =============================================
 
 function createGrid(level) {
     wordSearchGrid.innerHTML = '';
     wordSearchGrid.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
-    
-    // Crear celdas de la cuadrícula
+
     for (let row = 0; row < gridSize; row++) {
         for (let col = 0; col < gridSize; col++) {
             const cell = document.createElement('div');
             cell.className = 'cell';
             cell.dataset.row = row;
             cell.dataset.col = col;
-            
-            // Obtener la letra de la cuadrícula del nivel
+
             if (level.grid && level.grid[row] && level.grid[row][col]) {
                 cell.textContent = level.grid[row][col];
             } else {
-                // Si no hay letra definida, usar una aleatoria (para niveles generados)
                 cell.textContent = getRandomLetter();
             }
-            
+
             wordSearchGrid.appendChild(cell);
         }
     }
@@ -830,247 +852,172 @@ function displayWordList(words) {
     });
 }
 
+// =============================================
+// EVENTOS
+// =============================================
+
 function setupEventListeners() {
-    // Eventos de mouse
-    wordSearchGrid.addEventListener('mousedown', handleSelectionStart);
-    wordSearchGrid.addEventListener('mouseover', handleSelectionMove);
-    document.addEventListener('mouseup', handleSelectionEnd);
-    
-    // Eventos de toque para móviles
-    wordSearchGrid.addEventListener('touchstart', handleTouchStart);
-    wordSearchGrid.addEventListener('touchmove', handleTouchMove);
-    document.addEventListener('touchend', handleTouchEnd);
-    
-    // Botones de navegación entre niveles
+    // ---- MOUSE (arrastrar) ----
+    wordSearchGrid.addEventListener('mousedown', onMouseDown);
+    wordSearchGrid.addEventListener('mouseover', onMouseOver);
+    document.addEventListener('mouseup', onMouseUp);
+
+    // ---- TOUCH (toque primera + última celda) ----
+    wordSearchGrid.addEventListener('touchstart', onTouchStart, { passive: false });
+    wordSearchGrid.addEventListener('touchmove', onTouchMove, { passive: false });
+    wordSearchGrid.addEventListener('touchend', onTouchEnd, { passive: false });
+
+    // ---- NAVEGACIÓN ----
     prevLevelButton.addEventListener('click', () => {
-        if (currentLevel > 1) {
-            currentLevel--;
-            loadLevel(currentLevel);
-        }
+        if (currentLevel > 1) { currentLevel--; loadLevel(currentLevel); }
     });
-    
     nextLevelButton.addEventListener('click', () => {
-        if (currentLevel < 100) {
-            currentLevel++;
-            loadLevel(currentLevel);
-        }
+        if (currentLevel < 100) { currentLevel++; loadLevel(currentLevel); }
     });
-    
-    restartLevelButton.addEventListener('click', () => {
-        loadLevel(currentLevel);
-    });
-    
-    // Modal de victoria
+    restartLevelButton.addEventListener('click', () => loadLevel(currentLevel));
     nextLevelModalButton.addEventListener('click', () => {
         hideVictoryModal();
-        if (currentLevel < 100) {
-            currentLevel++;
-            loadLevel(currentLevel);
-        }
+        if (currentLevel < 100) { currentLevel++; loadLevel(currentLevel); }
     });
-    
-    // Tutorial
     startGameButton.addEventListener('click', hideTutorial);
 }
 
-function handleSelectionStart(event) {
-    if (event.target.classList.contains('cell')) {
-        selectedCells = [event.target];
-        highlightSelectedCells();
-        updateSelectionLine();
+// =============================================
+// SELECCIÓN POR MOUSE (arrastre)
+// =============================================
+
+function onMouseDown(e) {
+    const cell = e.target.closest('.cell');
+    if (!cell) return;
+    isDragging = true;
+    dragStartCell = cell;
+    touchMode = false;
+    updateSelection([cell]);
+}
+
+function onMouseOver(e) {
+    if (!isDragging || !dragStartCell) return;
+    const cell = e.target.closest('.cell');
+    if (!cell) return;
+
+    const cells = getCellsBetween(dragStartCell, cell);
+    if (cells.length > 0) {
+        updateSelection(cells);
     }
 }
 
-function handleSelectionMove(event) {
-    if (event.buttons !== 1 || !selectedCells.length) return;
-    
-    if (event.target.classList.contains('cell') && !selectedCells.includes(event.target)) {
-        // Verificar si la celda es adyacente a la última seleccionada
-        const lastCell = selectedCells[selectedCells.length - 1];
-        const lastRow = parseInt(lastCell.dataset.row);
-        const lastCol = parseInt(lastCell.dataset.col);
-        const currentRow = parseInt(event.target.dataset.row);
-        const currentCol = parseInt(event.target.dataset.col);
-        
-        // Calcular diferencia
-        const rowDiff = Math.abs(currentRow - lastRow);
-        const colDiff = Math.abs(currentCol - lastCol);
-        
-        // Verificar si es adyacente y en línea recta
-        if (
-            (rowDiff === 0 && colDiff === 1) || // Horizontal
-            (rowDiff === 1 && colDiff === 0) || // Vertical
-            (rowDiff === 1 && colDiff === 1 && currentLevel > 59) // Diagonal (solo para niveles 60+)
-        ) {
-            // Asegurarse de que la dirección se mantiene
-            if (selectedCells.length > 1) {
-                const prevRow = parseInt(selectedCells[selectedCells.length - 2].dataset.row);
-                const prevCol = parseInt(selectedCells[selectedCells.length - 2].dataset.col);
-                
-                const currentDirection = {
-                    rowDir: lastRow - prevRow,
-                    colDir: lastCol - prevCol
-                };
-                
-                const newDirection = {
-                    rowDir: currentRow - lastRow,
-                    colDir: currentCol - lastCol
-                };
-                
-                // Si la dirección cambia, no permitir la selección
-                if (currentDirection.rowDir !== newDirection.rowDir || 
-                    currentDirection.colDir !== newDirection.colDir) {
-                    return;
-                }
-            }
-            
-            selectedCells.push(event.target);
-            highlightSelectedCells();
-            updateSelectionLine();
-        }
-    }
-}
+function onMouseUp(e) {
+    if (!isDragging) return;
+    isDragging = false;
 
-function handleSelectionEnd() {
     if (selectedCells.length > 0) {
         checkSelectedWord();
-        
-        // Ocultar la línea de selección con un retraso para efecto visual
-        setTimeout(() => {
-            selectionLine.style.opacity = '0';
-        }, 200);
-        
-        selectedCells = [];
-        clearHighlightedCells();
+    }
+
+    clearSelectionVisuals();
+    dragStartCell = null;
+}
+
+// =============================================
+// SELECCIÓN POR TOQUE (primera + última celda)
+// =============================================
+
+function onTouchStart(e) {
+    e.preventDefault();
+    touchMode = true;
+
+    const touch = e.touches[0];
+    const cell = getCellFromPoint(touch.clientX, touch.clientY);
+    if (!cell) return;
+
+    if (!isSelectingTouch) {
+        // Primera celda: iniciar selección
+        firstTouchCell = cell;
+        isSelectingTouch = true;
+        updateSelection([cell]);
+        cell.classList.add('touch-first');
+        provideTactileFeedback('start');
+        setTouchHint('Ahora toca la última letra');
     }
 }
 
-function handleTouchStart(event) {
-    event.preventDefault();
-    touchStarted = true;
-    const touch = event.touches[0];
-    const element = document.elementFromPoint(touch.clientX, touch.clientY);
-    
-    if (element && element.classList.contains('cell')) {
-        selectedCells = [element];
-        highlightSelectedCells();
-        updateSelectionLine();
+function onTouchMove(e) {
+    e.preventDefault();
+    if (!isSelectingTouch || !firstTouchCell) return;
+
+    const touch = e.touches[0];
+    const cell = getCellFromPoint(touch.clientX, touch.clientY);
+    if (!cell) return;
+
+    // Previsualizar la selección mientras se arrastra
+    const cells = getCellsBetween(firstTouchCell, cell);
+    if (cells.length > 0) {
+        updateSelection(cells);
+    } else {
+        updateSelection([firstTouchCell]);
     }
 }
 
-function handleTouchMove(event) {
-    if (!touchStarted) return;
-    event.preventDefault();
-    
-    const touch = event.touches[0];
-    const element = document.elementFromPoint(touch.clientX, touch.clientY);
-    
-    if (element && element.classList.contains('cell') && !selectedCells.includes(element)) {
-        // Verificar si la celda es adyacente a la última seleccionada
-        const lastCell = selectedCells[selectedCells.length - 1];
-        const lastRow = parseInt(lastCell.dataset.row);
-        const lastCol = parseInt(lastCell.dataset.col);
-        const currentRow = parseInt(element.dataset.row);
-        const currentCol = parseInt(element.dataset.col);
-        
-        // Calcular diferencia
-        const rowDiff = Math.abs(currentRow - lastRow);
-        const colDiff = Math.abs(currentCol - lastCol);
-        
-        // Verificar si es adyacente y en línea recta
-        if (
-            (rowDiff === 0 && colDiff === 1) || // Horizontal
-            (rowDiff === 1 && colDiff === 0) || // Vertical
-            (rowDiff === 1 && colDiff === 1 && currentLevel > 59) // Diagonal (solo para niveles 60+)
-        ) {
-            // Asegurarse de que la dirección se mantiene
-            if (selectedCells.length > 1) {
-                const prevRow = parseInt(selectedCells[selectedCells.length - 2].dataset.row);
-                const prevCol = parseInt(selectedCells[selectedCells.length - 2].dataset.col);
-                
-                const currentDirection = {
-                    rowDir: lastRow - prevRow,
-                    colDir: lastCol - prevCol
-                };
-                
-                const newDirection = {
-                    rowDir: currentRow - lastRow,
-                    colDir: currentCol - lastCol
-                };
-                
-                // Si la dirección cambia, no permitir la selección
-                if (currentDirection.rowDir !== newDirection.rowDir || 
-                    currentDirection.colDir !== newDirection.colDir) {
-                    return;
-                }
-            }
-            
-            selectedCells.push(element);
-            highlightSelectedCells();
-            updateSelectionLine();
-        }
-    }
-}
+function onTouchEnd(e) {
+    e.preventDefault();
+    if (!isSelectingTouch || !firstTouchCell) return;
 
-function handleTouchEnd(event) {
-    if (touchStarted) {
-        event.preventDefault();
-        touchStarted = false;
-        
-        if (selectedCells.length > 0) {
+    const touch = e.changedTouches[0];
+    const cell = getCellFromPoint(touch.clientX, touch.clientY);
+
+    if (cell && cell !== firstTouchCell) {
+        // Segunda celda: confirmar selección
+        const cells = getCellsBetween(firstTouchCell, cell);
+        if (cells.length > 0) {
+            updateSelection(cells);
             checkSelectedWord();
-            
-            // Ocultar la línea de selección con un retraso para efecto visual
-            setTimeout(() => {
-                selectionLine.style.opacity = '0';
-            }, 200);
-            
-            selectedCells = [];
-            clearHighlightedCells();
+        } else {
+            // No forma línea válida: mostrar error y reiniciar
+            showInvalidSelection();
         }
+    } else if (cell && cell === firstTouchCell) {
+        // Toque en la misma celda: cancelar
+        showInvalidSelection();
     }
+
+    // Limpiar estado táctil
+    clearTouchFirst();
+    clearSelectionVisuals();
+    firstTouchCell = null;
+    isSelectingTouch = false;
+    setTouchHint('Toca la primera letra de la palabra');
+    setTimeout(() => setTouchHint(''), 1500);
 }
 
-function updateSelectionLine() {
-    if (selectedCells.length < 2) {
-        selectionLine.style.opacity = '0';
-        return;
-    }
-    
-    const firstCell = selectedCells[0];
-    const lastCell = selectedCells[selectedCells.length - 1];
-    
-    // Obtener las coordenadas del centro de las celdas
-    const firstRect = firstCell.getBoundingClientRect();
-    const lastRect = lastCell.getBoundingClientRect();
-    
-    const gridRect = wordSearchGrid.getBoundingClientRect();
-    
-    const x1 = firstRect.left + firstRect.width / 2 - gridRect.left;
-    const y1 = firstRect.top + firstRect.height / 2 - gridRect.top;
-    const x2 = lastRect.left + lastRect.width / 2 - gridRect.left;
-    const y2 = lastRect.top + lastRect.height / 2 - gridRect.top;
-    
-    // Calcular la longitud y el ángulo de la línea
-    const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-    const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
-    
-    // Aplicar estilos a la línea
-    selectionLine.style.width = `${length}px`;
-    selectionLine.style.left = `${x1}px`;
-    selectionLine.style.top = `${y1}px`;
-    selectionLine.style.transform = `rotate(${angle}deg)`;
-    selectionLine.style.opacity = '1';
+function clearTouchFirst() {
+    document.querySelectorAll('.touch-first').forEach(c => c.classList.remove('touch-first'));
 }
 
-function highlightSelectedCells() {
-    // Quitar resaltado de todas las celdas
+function getCellFromPoint(x, y) {
+    const el = document.elementFromPoint(x, y);
+    return el && el.classList.contains('cell') ? el : (el && el.closest('.cell'));
+}
+
+// =============================================
+// LÓGICA DE SELECCIÓN COMÚN
+// =============================================
+
+function updateSelection(cells) {
+    // Limpiar selección visual previa (no celdas ya encontradas)
     clearHighlightedCells();
-    
-    // Resaltar celdas seleccionadas
-    selectedCells.forEach(cell => {
-        cell.classList.add('selected');
+    selectedCells = cells;
+    cells.forEach(cell => {
+        if (!cell.classList.contains('found')) {
+            cell.classList.add('selected');
+        }
     });
+    drawSelectionLine(cells);
+}
+
+function clearSelectionVisuals() {
+    clearHighlightedCells();
+    selectedCells = [];
+    selectionLine.style.opacity = '0';
 }
 
 function clearHighlightedCells() {
@@ -1079,51 +1026,86 @@ function clearHighlightedCells() {
     });
 }
 
+function drawSelectionLine(cells) {
+    if (cells.length < 2) {
+        selectionLine.style.opacity = '0';
+        return;
+    }
+
+    const firstRect = cells[0].getBoundingClientRect();
+    const lastRect = cells[cells.length - 1].getBoundingClientRect();
+    const gridRect = wordSearchGrid.getBoundingClientRect();
+
+    const x1 = firstRect.left + firstRect.width / 2 - gridRect.left;
+    const y1 = firstRect.top + firstRect.height / 2 - gridRect.top;
+    const x2 = lastRect.left + lastRect.width / 2 - gridRect.left;
+    const y2 = lastRect.top + lastRect.height / 2 - gridRect.top;
+
+    const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+    const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
+
+    selectionLine.style.width = `${length}px`;
+    selectionLine.style.left = `${x1}px`;
+    selectionLine.style.top = `${y1}px`;
+    selectionLine.style.transform = `rotate(${angle}deg)`;
+    selectionLine.style.opacity = '1';
+}
+
+// =============================================
+// VERIFICACIÓN DE PALABRA
+// =============================================
+
 function checkSelectedWord() {
-    if (selectedCells.length < 3) return; // Palabras muy cortas no cuentan
-    
-    // Obtener la palabra formada
-    const selectedWord = selectedCells.map(cell => cell.textContent).join('');
-    
-    // Obtener el nivel actual
-    const level = currentLevel <= levels.length ? levels[currentLevel - 1] : generateLevel(currentLevel);
-    
-    // Verificar si la palabra está en la lista
+    if (selectedCells.length < 2) return;
+
+    const selectedWord = selectedCells.map(cell => cell.textContent.trim()).join('');
+    const level = currentLevel <= levels.length
+        ? levels[currentLevel - 1]
+        : generateLevel(currentLevel);
+
     if (level.words.includes(selectedWord) && !foundWords.includes(selectedWord)) {
-        // Efecto de celebración
+        // ¡Palabra encontrada!
+        provideTactileFeedback('found');
+
         selectedCells.forEach(cell => {
-            cell.classList.add('celebrate');
+            cell.classList.remove('selected');
+            cell.classList.add('found', 'celebrate');
             setTimeout(() => cell.classList.remove('celebrate'), 500);
         });
-        
+
         foundWords.push(selectedWord);
-        
-        // Marcar celdas como encontradas
-        selectedCells.forEach(cell => {
-            cell.classList.add('found');
-        });
-        
-        // Marcar palabra como encontrada en la lista
-        const wordElement = document.querySelector(`#word-list li[data-word="${selectedWord}"]`);
-        if (wordElement) {
-            wordElement.classList.add('found');
-            wordElement.classList.add('pulse');
-            setTimeout(() => wordElement.classList.remove('pulse'), 500);
+
+        const wordEl = document.querySelector(`#word-list li[data-word="${selectedWord}"]`);
+        if (wordEl) {
+            wordEl.classList.add('found', 'pulse');
+            setTimeout(() => wordEl.classList.remove('pulse'), 500);
         }
-        
-        // Actualizar barra de progreso
+
         updateProgressBar(foundWords.length / level.words.length * 100);
-        
-        // Verificar si se completó el nivel
         checkLevelCompletion(level);
     } else {
-        // Efecto de error
+        // Palabra no válida
         selectedCells.forEach(cell => {
-            cell.classList.add('shake');
-            setTimeout(() => cell.classList.remove('shake'), 300);
+            if (!cell.classList.contains('found')) {
+                cell.classList.add('shake');
+                setTimeout(() => cell.classList.remove('shake'), 300);
+            }
         });
     }
 }
+
+function showInvalidSelection() {
+    selectedCells.forEach(cell => {
+        if (!cell.classList.contains('found')) {
+            cell.classList.add('shake');
+            setTimeout(() => cell.classList.remove('shake'), 300);
+        }
+    });
+}
+
+// =============================================
+// PROGRESO Y VICTORIA
+// =============================================
 
 function updateProgressBar(percentage) {
     levelProgressElement.style.width = `${percentage}%`;
@@ -1131,484 +1113,164 @@ function updateProgressBar(percentage) {
 
 function checkLevelCompletion(level) {
     if (foundWords.length === level.words.length) {
-        setTimeout(() => {
-            showVictoryModal();
-        }, 800);
+        setTimeout(showVictoryModal, 800);
     }
 }
 
-function showVictoryModal() {
-    victoryModal.classList.add('active');
+function showVictoryModal() { victoryModal.classList.add('active'); }
+function hideVictoryModal() { victoryModal.classList.remove('active'); }
+function showTutorial() { tutorialModal.classList.add('active'); firstTimePlayer = false; }
+function hideTutorial() { tutorialModal.classList.remove('active'); }
+
+// =============================================
+// FEEDBACK HÁPTICO
+// =============================================
+
+function provideTactileFeedback(type = 'light') {
+    if (!navigator.vibrate) return;
+    switch (type) {
+        case 'start':  navigator.vibrate(30); break;
+        case 'found':  navigator.vibrate([100, 50, 100]); break;
+        default:       navigator.vibrate(20);
+    }
 }
 
-function hideVictoryModal() {
-    victoryModal.classList.remove('active');
-}
-
-function showTutorial() {
-    tutorialModal.classList.add('active');
-    firstTimePlayer = false;
-}
-
-function hideTutorial() {
-    tutorialModal.classList.remove('active');
-}
+// =============================================
+// LETRAS ALEATORIAS
+// =============================================
 
 function getRandomLetter() {
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    return letters[Math.floor(Math.random() * letters.length)];
+    return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[Math.floor(Math.random() * 26)];
 }
 
-// Función para generar niveles automáticamente (para los que no están definidos)
+// =============================================
+// GENERACIÓN AUTOMÁTICA DE NIVELES (37-100)
+// =============================================
+
 function generateLevel(levelIndex) {
-    // Determinar el tamaño de la cuadrícula y número de palabras según el nivel
-    let size, wordCount;
-    let wordDirections = [];
-    
+    let size, wordCount, wordDirections;
+
     if (levelIndex <= 30) {
-        size = 10;
-        wordCount = 6;
+        size = 10; wordCount = 6;
         wordDirections = ['horizontal', 'vertical'];
     } else if (levelIndex <= 70) {
-        size = 12;
-        wordCount = 9;
-        if (levelIndex > 50) {
-            wordDirections = ['horizontal', 'vertical', 'horizontalReverse', 'verticalReverse'];
-        } else {
-            wordDirections = ['horizontal', 'vertical'];
-        }
+        size = 12; wordCount = 9;
+        wordDirections = levelIndex > 50
+            ? ['horizontal', 'vertical', 'horizontalReverse', 'verticalReverse']
+            : ['horizontal', 'vertical'];
     } else {
-        size = 15;
-        wordCount = 12;
+        size = 15; wordCount = 12;
         wordDirections = ['horizontal', 'vertical', 'horizontalReverse', 'verticalReverse'];
-        if (levelIndex >= 60) {
-            wordDirections.push('diagonal');
-        }
+        if (levelIndex >= 60) wordDirections.push('diagonal');
     }
-    
-   // Aquí iban las lineas que borré
-   // Generar temática según el nivel
+
     const themes = [
-        {name: "Frutas", words: ["MANZANA", "PLATANO", "NARANJA", "FRESA", "PERA", "UVA", "MELON", "SANDIA", "KIWI", "PIÑA", "CEREZA", "MANGO"]},
-        {name: "Animales", words: ["PERRO", "GATO", "LEON", "TIGRE", "OSO", "LOBO", "JIRAFA", "ELEFANTE", "CEBRA", "MONO", "ZORRO", "AGUILA"]},
-        {name: "Colores", words: ["ROJO", "AZUL", "VERDE", "NEGRO", "BLANCO", "GRIS", "AMARILLO", "NARANJA", "MORADO", "ROSA", "MARRON", "VIOLETA"]},
-        {name: "Países", words: ["ESPAÑA", "FRANCIA", "ITALIA", "CHINA", "BRASIL", "INDIA", "MEXICO", "CANADA", "JAPON", "ALEMANIA", "RUSIA", "EGIPTO"]},
-        {name: "Astronomia", words: ["TIERRA", "MARTE", "VENUS", "JUPITER", "SATURNO", "URANO", "NEPTUNO", "MERCURIO", "PLUTON", "LUNA", "SOL", "COMETA"]},
-        {name: "Deportes", words: ["FUTBOL", "TENIS", "BASKET", "VOLEY", "GOLF", "RUGBY", "NATACION", "CICLISMO", "BOXEO", "KARATE", "SURF", "JUDO"]},
-        {name: "Profesiones", words: ["DOCTOR", "MAESTRO", "ABOGADO", "POLICIA", "BOMBERO", "PILOTO", "COCINERO", "INGENIERO", "DENTISTA", "ESCRITOR", "PINTOR", "ACTOR"]},
-        {name: "Ropa", words: ["CAMISA", "PANTALON", "FALDA", "ZAPATOS", "SOMBRERO", "ABRIGO", "BUFANDA", "GUANTES", "GORRA", "CALCETINES", "CHAQUETA", "VESTIDO"]},
-        {name: "Instrumentos", words: ["PIANO", "GUITARRA", "VIOLIN", "BATERIA", "FLAUTA", "TROMPETA", "SAXOFON", "CLARINETE", "ARPA", "ACORDEON", "BAJO", "TAMBOR"]},
-        {name: "Muebles", words: ["MESA", "SILLA", "SOFA", "CAMA", "ARMARIO", "ESTANTE", "ESPEJO", "LAMPARA", "COMODA", "ESCRITORIO", "TABURETE", "ALFOMBRA"]}
+        { name: "Frutas",        words: ["MANZANA","PLATANO","NARANJA","FRESA","PERA","UVA","MELON","SANDIA","KIWI","PIÑA","CEREZA","MANGO"] },
+        { name: "Animales",      words: ["PERRO","GATO","LEON","TIGRE","OSO","LOBO","JIRAFA","ELEFANTE","CEBRA","MONO","ZORRO","AGUILA"] },
+        { name: "Colores",       words: ["ROJO","AZUL","VERDE","NEGRO","BLANCO","GRIS","AMARILLO","NARANJA","MORADO","ROSA","MARRON","VIOLETA"] },
+        { name: "Países",        words: ["ESPAÑA","FRANCIA","ITALIA","CHINA","BRASIL","INDIA","MEXICO","CANADA","JAPON","ALEMANIA","RUSIA","EGIPTO"] },
+        { name: "Astronomía",    words: ["TIERRA","MARTE","VENUS","JUPITER","SATURNO","URANO","NEPTUNO","MERCURIO","PLUTON","LUNA","SOL","COMETA"] },
+        { name: "Deportes",      words: ["FUTBOL","TENIS","BASKET","VOLEY","GOLF","RUGBY","NATACION","CICLISMO","BOXEO","KARATE","SURF","JUDO"] },
+        { name: "Profesiones",   words: ["DOCTOR","MAESTRO","ABOGADO","POLICIA","BOMBERO","PILOTO","COCINERO","INGENIERO","DENTISTA","ESCRITOR","PINTOR","ACTOR"] },
+        { name: "Ropa",          words: ["CAMISA","PANTALON","FALDA","ZAPATOS","SOMBRERO","ABRIGO","BUFANDA","GUANTES","GORRA","CALCETINES","CHAQUETA","VESTIDO"] },
+        { name: "Instrumentos",  words: ["PIANO","GUITARRA","VIOLIN","BATERIA","FLAUTA","TROMPETA","SAXOFON","CLARINETE","ARPA","ACORDEON","BAJO","TAMBOR"] },
+        { name: "Muebles",       words: ["MESA","SILLA","SOFA","CAMA","ARMARIO","ESTANTE","ESPEJO","LAMPARA","COMODA","ESCRITORIO","TABURETE","ALFOMBRA"] }
     ];
-    
-    // Seleccionar tema basado en el nivel
+
     const theme = themes[levelIndex % themes.length];
-    
-    // Seleccionar palabras aleatorias de la temática
-    const selectedWords = [];
     const wordPool = [...theme.words];
-    
-    for (let i = 0; i < wordCount; i++) {
-        if (wordPool.length > 0) {
-            const randomIndex = Math.floor(Math.random() * wordPool.length);
-            selectedWords.push(wordPool[randomIndex]);
-            wordPool.splice(randomIndex, 1);
-        }
+    const selectedWords = [];
+
+    for (let i = 0; i < wordCount && wordPool.length > 0; i++) {
+        const idx = Math.floor(Math.random() * wordPool.length);
+        selectedWords.push(wordPool.splice(idx, 1)[0]);
     }
-    
-    // Crear una cuadrícula vacía
-    const grid = Array(size).fill().map(() => Array(size).fill(''));
-    
-    // Posiciones de las palabras
+
+    // Crear cuadrícula vacía
+    const grid = Array.from({ length: size }, () => Array(size).fill(''));
     const positions = {};
-    
-    // Intentar colocar cada palabra
+
     selectedWords.forEach(word => {
         let placed = false;
         let attempts = 0;
-        const maxAttempts = 100;
-        
-        while (!placed && attempts < maxAttempts) {
+
+        while (!placed && attempts < 150) {
             attempts++;
-            
-            // Elegir dirección aleatoria
             const direction = wordDirections[Math.floor(Math.random() * wordDirections.length)];
-            
-            // Determinar posición inicial y final según la dirección
-            let startRow, startCol, endRow, endCol;
-            
+            let startRow, startCol;
+
             switch (direction) {
                 case 'horizontal':
                     startRow = Math.floor(Math.random() * size);
                     startCol = Math.floor(Math.random() * (size - word.length + 1));
-                    endRow = startRow;
-                    endCol = startCol + word.length - 1;
                     break;
-                    
                 case 'vertical':
                     startRow = Math.floor(Math.random() * (size - word.length + 1));
                     startCol = Math.floor(Math.random() * size);
-                    endRow = startRow + word.length - 1;
-                    endCol = startCol;
                     break;
-                    
                 case 'horizontalReverse':
                     startRow = Math.floor(Math.random() * size);
                     startCol = Math.floor(Math.random() * (size - word.length + 1)) + word.length - 1;
-                    endRow = startRow;
-                    endCol = startCol - (word.length - 1);
                     break;
-                    
                 case 'verticalReverse':
                     startRow = Math.floor(Math.random() * (size - word.length + 1)) + word.length - 1;
                     startCol = Math.floor(Math.random() * size);
-                    endRow = startRow - (word.length - 1);
-                    endCol = startCol;
                     break;
-                    
                 case 'diagonal':
                     startRow = Math.floor(Math.random() * (size - word.length + 1));
                     startCol = Math.floor(Math.random() * (size - word.length + 1));
-                    endRow = startRow + word.length - 1;
-                    endCol = startCol + word.length - 1;
                     break;
+                default:
+                    continue;
             }
-            
-            // Verificar si la palabra cabe sin superponerse
+
+            const increments = {
+                horizontal:        { dr: 0,  dc: 1  },
+                vertical:          { dr: 1,  dc: 0  },
+                horizontalReverse: { dr: 0,  dc: -1 },
+                verticalReverse:   { dr: -1, dc: 0  },
+                diagonal:          { dr: 1,  dc: 1  }
+            };
+            const { dr, dc } = increments[direction];
+
             let canPlace = true;
-            const cells = [];
-            
+            const cellCoords = [];
 
-
-            //Intento de mejora
-            // Configuración para mejor detección diagonal
-
-// Función para calcular dirección con tolerancia diagonal
-function calculateDirection(deltaRow, deltaCol) {
-    const absRow = Math.abs(deltaRow);
-    const absCol = Math.abs(deltaCol);
-    
-    // Si no hay movimiento significativo
-    if (absRow <= 1 && absCol <= 1) {
-        return [0, 0];
-    }
-
-    // Detección de dirección con tolerancia mejorada
-    if (absRow === 0) {
-        // Horizontal
-        return [0, deltaCol > 0 ? 1 : -1];
-    } else if (absCol === 0) {
-        // Vertical
-        return [deltaRow > 0 ? 1 : -1, 0];
-    } else {
-        // Diagonal - con tolerancia mejorada
-        const ratio = absRow / absCol;
-        
-        if (ratio >= (1 - DIAGONAL_TOLERANCE) && ratio <= (1 + DIAGONAL_TOLERANCE)) {
-            // Es una diagonal válida
-            return [
-                deltaRow > 0 ? 1 : -1,
-                deltaCol > 0 ? 1 : -1
-            ];
-        } else if (ratio < 0.5) {
-            // Más horizontal que diagonal - snap a horizontal
-            return [0, deltaCol > 0 ? 1 : -1];
-        } else if (ratio > 2) {
-            // Más vertical que diagonal - snap a vertical
-            return [deltaRow > 0 ? 1 : -1, 0];
-        }
-    }
-    
-    return null;
-}
-
-// Función para obtener selección linear con snapping
-function getLinearSelection(startRow, startCol, endRow, endCol, direction) {
-    const cells = [];
-    const [dirRow, dirCol] = direction;
-    
-    if (dirRow === 0 && dirCol === 0) {
-        return [grid[startRow][startCol]]; // Cambia 'grid' por tu variable de grid
-    }
-
-    let currentRow = startRow;
-    let currentCol = startCol;
-    
-    // Calcular la distancia máxima en la dirección dada
-    let maxSteps = Math.max(
-        Math.abs(endRow - startRow),
-        Math.abs(endCol - startCol)
-    );
-
-    for (let i = 0; i <= maxSteps; i++) {
-        if (currentRow >= 0 && currentRow < gridSize && // Cambia 'gridSize' por tu variable
-            currentCol >= 0 && currentCol < gridSize) {
-            cells.push(grid[currentRow][currentCol]);
-        }
-        
-        currentRow += dirRow;
-        currentCol += dirCol;
-        
-        // Verificar si hemos llegado cerca del objetivo
-        if (Math.abs(currentRow - endRow) <= 1 && Math.abs(currentCol - endCol) <= 1) {
-            break;
-        }
-    }
-
-    return cells;
-}
-
-// Función mejorada para manejar el movimiento de selección
-function handleSelectionMoveImproved(currentCell) {
-    if (!isSelecting || !startCell) return;
-
-    // Limpiar selección anterior
-    selectedCells.forEach(cell => {
-        if (!cell.classList.contains('found')) {
-            cell.classList.remove('selecting');
-        }
-    });
-
-    // Calcular dirección con tolerancia mejorada
-    const startRow = parseInt(startCell.dataset.row);
-    const startCol = parseInt(startCell.dataset.col);
-    const currentRow = parseInt(currentCell.dataset.row);
-    const currentCol = parseInt(currentCell.dataset.col);
-
-    const deltaRow = currentRow - startRow;
-    const deltaCol = currentCol - startCol;
-
-    // Determinar dirección con tolerancia diagonal mejorada
-    let direction = calculateDirection(deltaRow, deltaCol);
-    
-    if (direction) {
-        selectedCells = getLinearSelection(
-            startRow, startCol, 
-            currentRow, currentCol, 
-            direction
-        );
-
-        // Aplicar estilo de selección
-        selectedCells.forEach(cell => {
-            if (!cell.classList.contains('found')) {
-                cell.classList.add('selecting');
-            }
-        });
-    }
-}
-
-//FIN INTENTO DE MEJORA
-//INICIO SEGUNDA MEJORA
-// Configuración mejorada
-const DIAGONAL_TOLERANCE = 0.4; // Aumentar tolerancia al 40%
-const CELL_PADDING = 8; // Padding extra para cada celda (píxeles)
-
-// Función para expandir el área de detección de cada celda
-function expandCellHitArea() {
-    const cells = document.querySelectorAll('.cell');
-    cells.forEach(cell => {
-        cell.style.padding = `${CELL_PADDING}px`;
-        cell.style.margin = `-${CELL_PADDING/2}px`;
-        cell.style.boxSizing = 'border-box';
-    });
-}
-
-// ==============================================
-// MEJORA 2: PREDICCIÓN DE DIRECCIÓN INTELIGENTE
-// ==============================================
-
-let lastDirection = null;
-let directionHistory = [];
-
-function predictDirection(deltaRow, deltaCol) {
-    const absRow = Math.abs(deltaRow);
-    const absCol = Math.abs(deltaCol);
-    
-    // Mantener historial de direcciones
-    if (absRow > 0 || absCol > 0) {
-        const currentDir = [
-            deltaRow > 0 ? 1 : deltaRow < 0 ? -1 : 0,
-            deltaCol > 0 ? 1 : deltaCol < 0 ? -1 : 0
-        ];
-        directionHistory.push(currentDir);
-        
-        // Mantener solo las últimas 3 direcciones
-        if (directionHistory.length > 3) {
-            directionHistory.shift();
-        }
-    }
-    
-    // Si hay un patrón consistente, usarlo
-    if (directionHistory.length >= 2) {
-        const avgDirRow = directionHistory.reduce((sum, dir) => sum + dir[0], 0) / directionHistory.length;
-        const avgDirCol = directionHistory.reduce((sum, dir) => sum + dir[1], 0) / directionHistory.length;
-        
-        if (Math.abs(avgDirRow) > 0.3 || Math.abs(avgDirCol) > 0.3) {
-            return [
-                avgDirRow > 0.3 ? 1 : avgDirRow < -0.3 ? -1 : 0,
-                avgDirCol > 0.3 ? 1 : avgDirCol < -0.3 ? -1 : 0
-            ];
-        }
-    }
-    
-    // Fallback a cálculo normal
-    return calculateDirection(deltaRow, deltaCol);
-}
-
-// ==============================================
-// MEJORA 3: VIBRACIÓN Y FEEDBACK HÁPTICO
-// ==============================================
-
-function provideTactileFeedback(type = 'light') {
-    // Vibración en móviles
-    if (navigator.vibrate) {
-        switch(type) {
-            case 'start':
-                navigator.vibrate(50); // Vibración corta al iniciar
-                break;
-            case 'diagonal':
-                navigator.vibrate([30, 10, 30]); // Patrón para diagonal
-                break;
-            case 'found':
-                navigator.vibrate([100, 50, 100, 50, 100]); // Patrón para palabra encontrada
-                break;
-            default:
-                navigator.vibrate(20);
-        }
-    }
-}
-
-// ==============================================
-// MEJORA 4: LÍNEA DE SELECCIÓN VISUAL
-// ==============================================
-
-let selectionLine = null;
-
-function createSelectionLine() {
-    if (!selectionLine) {
-        selectionLine = document.createElement('div');
-        selectionLine.className = 'selection-line';
-        selectionLine.style.cssText = `
-            position: absolute;
-            background: rgba(33, 150, 243, 0.7);
-            height: 4px;
-            border-radius: 2px;
-            pointer-events: none;
-            z-index: 1000;
-            transform-origin: left center;
-            box-shadow: 0 0 10px rgba(33, 150, 243, 0.5);
-            transition: all 0.1s ease;
-        `;
-        document.body.appendChild(selectionLine);
-    }
-}
-
-function updateSelectionLine(startCell, endCell) {
-    if (!selectionLine || !startCell || !endCell) return;
-    
-    const startRect = startCell.getBoundingClientRect();
-    const endRect = endCell.getBoundingClientRect();
-    
-    const startX = startRect.left + startRect.width / 2;
-    const startY = startRect.top + startRect.height / 2;
-    const endX = endRect.left + endRect.width / 2;
-    const endY = endRect.top + endRect.height / 2;
-    
-    const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
-    const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
-    
-    selectionLine.style.left = startX + 'px';
-    selectionLine.style.top = startY + 'px';
-    selectionLine.style.width = length + 'px';
-    selectionLine.style.transform = `rotate(${angle}deg)`;
-    selectionLine.style.display = 'block';
-}
-
-function hideSelectionLine() {
-    if (selectionLine) {
-        selectionLine.style.display = 'none';
-    }
-}
-//FIN SEGUNDA MEJORA
-            // Calcular incrementos según la dirección
-            let rowIncrement = 0;
-            let colIncrement = 0;
-            
-            switch (direction) {
-                case 'horizontal':
-                    colIncrement = 1;
-                    break;
-                case 'vertical':
-                    rowIncrement = 1;
-                    break;
-                case 'horizontalReverse':
-                    colIncrement = -1;
-                    break;
-                case 'verticalReverse':
-                    rowIncrement = -1;
-                    break;
-                case 'diagonal':
-                    rowIncrement = 1;
-                    colIncrement = 1;
-                    break;
-            }
-            
-            // Verificar cada celda
             for (let i = 0; i < word.length; i++) {
-                const row = startRow + (i * rowIncrement);
-                const col = startCol + (i * colIncrement);
-                cells.push({row, col});
-                
-                // Si la celda ya está ocupada, verificar si es con la misma letra
-                if (grid[row][col] && grid[row][col] !== word[i]) {
-                    canPlace = false;
-                    break;
-                }
+                const r = startRow + i * dr;
+                const c = startCol + i * dc;
+                if (r < 0 || r >= size || c < 0 || c >= size) { canPlace = false; break; }
+                if (grid[r][c] && grid[r][c] !== word[i]) { canPlace = false; break; }
+                cellCoords.push({ r, c });
             }
-            
-            // Si se puede colocar, añadir la palabra a la cuadrícula
+
             if (canPlace) {
-                for (let i = 0; i < word.length; i++) {
-                    const {row, col} = cells[i];
-                    grid[row][col] = word[i];
-                }
-                
-                // Guardar la posición
-                positions[word] = {
-                    start: {row: startRow, col: startCol},
-                    end: {row: endRow, col: endCol},
-                    direction
-                };
-                
+                cellCoords.forEach(({ r, c }, i) => { grid[r][c] = word[i]; });
+                positions[word] = { start: { row: startRow, col: startCol }, direction };
                 placed = true;
             }
         }
-        
-        // Si no se pudo colocar después de muchos intentos, reducir el tamaño de la palabra
-        if (!placed) {
-            console.warn(`No se pudo colocar la palabra: ${word}`);
-        }
+
+        if (!placed) console.warn(`No se pudo colocar: ${word}`);
     });
-    
-    // Rellenar espacios vacíos con letras aleatorias
-    for (let row = 0; row < size; row++) {
-        for (let col = 0; col < size; col++) {
-            if (!grid[row][col]) {
-                grid[row][col] = getRandomLetter();
-            }
+
+    // Rellenar huecos con letras aleatorias
+    for (let r = 0; r < size; r++) {
+        for (let c = 0; c < size; c++) {
+            if (!grid[r][c]) grid[r][c] = getRandomLetter();
         }
     }
-    
-    // Convertir la matriz en un arreglo de strings
-    const gridStrings = grid.map(row => row.join(''));
-    
+
     return {
         theme: theme.name,
         words: selectedWords,
-        grid: gridStrings,
+        grid: grid.map(row => row.join('')),
         positions,
-        bgClass: `level-bg-${(levelIndex % 20) + 1}`
+        bgClass: `level-bg-${(levelIndex % 100) + 1}`
     };
 }
 
+// =============================================
+// ARRANQUE
+// =============================================
 window.addEventListener('DOMContentLoaded', initGame);
