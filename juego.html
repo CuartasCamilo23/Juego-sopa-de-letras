@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Sopa de Letras - 100 Niveles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-wrapper">
+        <div class="container">
+            <header class="topbar">
+                <a class="icon-btn" id="home-btn" href="index.html" aria-label="Menú principal">
+                    <span class="material-icons-round">home</span>
+                </a>
+                <div class="title-block">
+                    <div class="theme-badge" id="level-theme">Frutas</div>
+                    <div class="level-info">Nivel <span id="current-level">1</span> / 100</div>
+                    <div class="mode-label" id="mode-label">Clásico</div>
+                </div>
+                <button class="icon-btn" id="sound-btn" aria-label="Sonido">
+                    <span class="material-icons-round">volume_up</span>
+                </button>
+            </header>
+
+            <div class="stats-bar">
+                <div class="stat"><span class="material-icons-round">timer</span><span id="timer">0:00</span></div>
+                <div class="stat"><span class="material-icons-round">check_circle</span><span id="found-count">0/0</span></div>
+                <div class="stat"><span class="material-icons-round">lightbulb</span><span id="hint-stat">3</span></div>
+            </div>
+
+            <div class="board" id="board">
+                <svg class="board-svg" id="board-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+                <div class="grid" id="grid"></div>
+                <div class="selection-preview" id="selection-preview"></div>
+            </div>
+
+            <div class="words-to-find">
+                <h3>Palabras a encontrar</h3>
+                <ul id="word-list"></ul>
+                <div class="progress-bar"><div class="progress-fill" id="level-progress"></div></div>
+            </div>
+
+            <div class="controls">
+                <button id="prev-level" class="btn btn-secondary" aria-label="Nivel anterior">
+                    <span class="material-icons-round">arrow_back</span><span class="btn-label">Anterior</span>
+                </button>
+                <button id="levels-btn" class="btn btn-secondary" aria-label="Elegir nivel">
+                    <span class="material-icons-round">apps</span><span class="btn-label">Niveles</span>
+                </button>
+                <button id="hint-btn" class="btn btn-secondary" aria-label="Pista">
+                    <span class="material-icons-round">lightbulb</span><span class="btn-label">Pista</span>
+                    <span class="badge" id="hint-badge">3</span>
+                </button>
+                <button id="restart-level" class="btn btn-secondary" aria-label="Reiniciar">
+                    <span class="material-icons-round">refresh</span><span class="btn-label" id="restart-label">Reiniciar</span>
+                </button>
+                <button id="next-level" class="btn btn-primary" aria-label="Nivel siguiente">
+                    <span class="btn-label">Siguiente</span><span class="material-icons-round">arrow_forward</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <!-- Victoria -->
+    <div class="modal" id="victory-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="material-icons-round">emoji_events</span>
+                <h2 id="victory-title">¡Nivel completado!</h2>
+            </div>
+            <div class="modal-body">
+                <div class="stars-container">
+                    <span class="material-icons-round star">star</span>
+                    <span class="material-icons-round star">star</span>
+                    <span class="material-icons-round star">star</span>
+                </div>
+                <p id="victory-text"></p>
+                <div class="victory-stats" id="victory-stats"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="replay-modal" class="btn btn-secondary">
+                    <span class="material-icons-round">replay</span><span>Repetir</span>
+                </button>
+                <button id="next-level-modal" class="btn btn-primary">
+                    <span>Siguiente nivel</span><span class="material-icons-round">arrow_forward</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Selector de niveles -->
+    <div class="modal" id="levels-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="material-icons-round">apps</span>
+                <h2>Elige un nivel</h2>
+            </div>
+            <div class="modal-body"><div class="level-grid" id="level-grid"></div></div>
+            <div class="modal-footer">
+                <button id="close-levels" class="btn btn-secondary">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tutorial -->
+    <div class="modal" id="tutorial-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="material-icons-round">help_outline</span>
+                <h2>¿Cómo jugar?</h2>
+            </div>
+            <div class="modal-body">
+                <p><strong>Desliza</strong> el dedo o el mouse desde la primera hasta la última letra de una palabra. La selección se ajusta sola a la línea más cercana.</p>
+                <p>También puedes <strong>tocar la primera letra y luego la última</strong>.</p>
+                <p>Al avanzar aparecen diagonales y palabras al revés. Encuentra todo rápido y sin pistas para ganar 3 estrellas.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="start-game" class="btn btn-primary">¡Entendido!</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="levels-data.js"></script>
+    <script src="generator.js"></script>
+    <script src="levels-fixed.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

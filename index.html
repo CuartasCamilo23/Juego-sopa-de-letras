@@ -4,116 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sopa de Letras - 100 Niveles</title>
-    <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <div class="game-wrapper">
-        <div class="container">
-            <header>
-                <h1 id="game-title">Sopa de Letras</h1>
-                <div class="theme-badge" id="level-theme">Frutas</div>
-                <div class="level-info">
-                    <span>Nivel </span><span id="current-level">1</span><span> de 100</span>
-                </div>
-            </header>
-            
-            <div class="game-container">
-                <div class="word-search-wrapper">
-                    <div id="word-search-grid" class="word-search-grid"></div>
-                    <div class="selection-line" id="selection-line"></div>
-                </div>
-                <div class="touch-hint" id="touch-hint">Toca la primera letra de la palabra</div>
-                
-                <div class="words-to-find">
-                    <h3>Palabras a encontrar:</h3>
-                    <ul id="word-list"></ul>
-                    <div class="progress-container">
-                        <div class="progress-label">Progreso del nivel</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="level-progress"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="controls">
-                <button id="prev-level" class="btn btn-secondary">
-                    <span class="material-icons-round">arrow_back</span>
-                    <span>Anterior</span>
-                </button>
-                <button id="restart-level" class="btn btn-secondary">
-                    <span class="material-icons-round">refresh</span>
-                    <span>Reiniciar</span>
-                </button>
-                <button id="next-level" class="btn btn-primary">
-                    <span>Siguiente</span>
-                    <span class="material-icons-round">arrow_forward</span>
-                </button>
+<body class="menu-page level-bg-7">
+    <div class="menu-wrapper">
+        <div class="menu-card">
+            <h1 class="logo">Sopa de Letras</h1>
+            <p class="tagline">100 niveles · dificultad progresiva</p>
+            <div class="mode-list">
+                <a class="mode-card" href="juego.html?modo=fijo" data-mode="fijo">
+                    <span class="material-icons-round mode-icon">grid_on</span>
+                    <span class="mode-text">
+                        <span class="mode-title">Clásico</span>
+                        <span class="mode-desc">Los 100 niveles siempre iguales.</span>
+                        <span class="mode-progress"></span>
+                    </span>
+                </a>
+                <a class="mode-card mode-random" href="juego.html?modo=aleatorio" data-mode="aleatorio">
+                    <span class="material-icons-round mode-icon">shuffle</span>
+                    <span class="mode-text">
+                        <span class="mode-title">Aleatorio</span>
+                        <span class="mode-desc">Cada partida cambia las palabras y su posición.</span>
+                        <span class="mode-progress"></span>
+                    </span>
+                </a>
             </div>
         </div>
     </div>
-    
-    <!-- Modal de victoria -->
-    <div class="modal" id="victory-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="material-icons-round success-icon">emoji_events</span>
-                <h2>¡Nivel Completado!</h2>
-            </div>
-            <div class="modal-body">
-                <p>Has encontrado todas las palabras del nivel <span id="completed-level">1</span>.</p>
-                <div class="stars-container">
-                    <span class="material-icons-round star">star</span>
-                    <span class="material-icons-round star">star</span>
-                    <span class="material-icons-round star">star</span>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button id="next-level-modal" class="btn btn-primary">
-                    <span>Siguiente Nivel</span>
-                    <span class="material-icons-round">arrow_forward</span>
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Tutorial para el primer nivel -->
-    <div class="modal" id="tutorial-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="material-icons-round">help_outline</span>
-                <h2>¿Cómo jugar?</h2>
-            </div>
-            <div class="modal-body">
-                <p>Toca la <strong>primera letra</strong> de una palabra y luego la <strong>última letra</strong>. ¡Las letras del medio se seleccionan solas!</p>
-                <p>En computadora también puedes arrastrar el dedo/mouse de inicio a fin.</p>
-                <p>Las palabras pueden estar en horizontal, vertical o diagonal (según el nivel).</p>
-                <div class="tutorial-image">
-                    <div class="tutorial-grid">
-                        <div class="tutorial-cell tutorial-first">C</div>
-                        <div class="tutorial-cell tutorial-middle">A</div>
-                        <div class="tutorial-cell tutorial-middle">S</div>
-                        <div class="tutorial-cell tutorial-last">A</div>
-                    </div>
-                    <div class="tutorial-labels">
-                        <span>① Toca</span>
-                        <span></span>
-                        <span></span>
-                        <span>② Toca</span>
-                    </div>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button id="start-game" class="btn btn-primary">¡Entendido!</button>
-            </div>
-        </div>
-    </div>
-    
-    <script src="script.js"></script>
+    <script>
+        document.querySelectorAll('.mode-card').forEach(card => {
+            let p = null;
+            try { p = JSON.parse(localStorage.getItem('sopa-progreso-' + card.dataset.mode)); } catch (e) { /* sin datos */ }
+            const stars = p ? Object.values(p.stars).reduce((a, b) => a + b, 0) : 0;
+            card.querySelector('.mode-progress').textContent = p
+                ? `Nivel ${p.unlocked} desbloqueado · ★ ${stars}/300`
+                : 'Empieza desde el nivel 1';
+        });
+    </script>
 </body>
 </html>
